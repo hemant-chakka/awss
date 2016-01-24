@@ -1,0 +1,1 @@
+a:1:{s:23:"DashboardBlogEntryPanel";a:4:{s:7:"has_one";a:2:{s:6:"access";i:347;s:5:"value";a:1:{s:10:"BlogHolder";s:10:"BlogHolder";}}s:8:"defaults";a:2:{s:6:"access";i:347;s:5:"value";a:1:{s:9:"PanelSize";s:6:"normal";}}s:4:"icon";a:2:{s:6:"access";i:347;s:5:"value";s:31:"dashboard/images/panel-blog.png";}s:19:"configure_on_create";a:2:{s:6:"access";i:347;s:5:"value";b:1;}}}

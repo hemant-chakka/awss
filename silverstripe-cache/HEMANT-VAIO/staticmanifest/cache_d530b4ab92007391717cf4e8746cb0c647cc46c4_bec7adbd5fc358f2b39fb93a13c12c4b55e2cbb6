@@ -1,0 +1,1 @@
+a:1:{s:23:"RemoveOrphanedPagesTask";a:1:{s:15:"allowed_actions";a:2:{s:6:"access";i:347;s:5:"value";a:4:{s:5:"index";s:5:"ADMIN";s:4:"Form";s:5:"ADMIN";s:3:"run";s:5:"ADMIN";s:12:"handleAction";s:5:"ADMIN";}}}}

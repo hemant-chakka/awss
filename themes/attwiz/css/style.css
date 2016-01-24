@@ -1,0 +1,95 @@
+body {
+background:#E2EBF2;
+}
+
+#s5_outer_wrap {
+}
+
+#s5_menu {
+border-bottom:solid 2px #2EA2C5;
+display: none;
+}
+
+#s5_sub_menu {
+background:url(../images/style1/s5_menu_line.png);
+border-left:solid 1px #77C2D9;
+border-right:solid 1px #77C2D9;
+padding-top:5px;
+padding-bottom:5px;
+}
+
+* html #s5_sub_menu {
+border:none;
+}
+
+/***********************************************************
+.button, a:link, a:visited, .s5_h3_first, ul.menu #current span, .componentheading, .contentheading, h1, h2, h3, h4, h5, #s5_closed, #s5_open  {
+color:#2588A6;
+}
+
+**********************************************************/
+
+#s5_vm_search_button_middle {
+height:28px;
+background:transparent url(../images/style1/s5_m_search_button.png) repeat-x;
+float:right;
+margin-top:5px;
+margin-right:15px;
+}
+
+* html #s5_vm_search_button_middle {
+width:1px;
+margin-right:15px;
+}
+
+#s5_vm_search_button_left {
+height:28px;
+background:transparent url(../images/style1/s5_l_search_button.png) no-repeat top left;
+}
+
+#s5_vm_search_button_right {
+height:28px;
+background:transparent url(../images/style1/s5_r_search_button.png) no-repeat top right;
+}
+
+#s5_navv ul li.active span.s5_outer_active span.s5_rs {
+	background:transparent url(../images/style1/s5_l_menu_act.png) no-repeat top left;
+	height:41px;
+	display:block;
+	float:left;
+}
+
+#s5_navv ul li.active span.s5_outer_active {
+	background:transparent url(../images/style1/s5_r_menu_act.png) no-repeat top right;
+	height:41px;
+	display:block;
+	float:left;
+}
+
+#s5_bottom_row_1 {
+	background:transparent url(../images/style1/s5_bot_row_m.png) repeat-x top center;
+}
+
+#s5_bottom_row_2 {
+	background:transparent url(../images/style1/s5_bot_row_l.png) no-repeat top left;
+	position:relative;
+}
+
+#s5_bottom_row_3 {
+	background:transparent url(../images/style1/s5_bot_row_r.png) no-repeat top right;
+	padding-left:13px;
+	padding-right:13px;
+	padding-top:52px;
+}
+
+.addtocart_button {
+	background:transparent url(../images/style1/addToCart.gif) no-repeat top left;
+	height:31px;
+	width:143px;
+	margin-top:13px;
+	margin-bottom:10px;
+	font-size:12px;
+	border:none;
+	font-weight:bold;
+	color:#FFFFFF;
+}

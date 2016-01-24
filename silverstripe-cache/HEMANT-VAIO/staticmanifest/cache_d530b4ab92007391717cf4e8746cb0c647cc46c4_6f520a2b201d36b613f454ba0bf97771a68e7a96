@@ -1,0 +1,1 @@
+a:1:{s:27:"DashboardLifeTimeValuePanel";a:3:{s:2:"db";a:2:{s:6:"access";i:347;s:5:"value";a:3:{s:14:"SelectCriteria";s:31:"Enum(array("Monthly","Yearly"))";s:5:"Month";s:3:"Int";s:4:"Year";s:3:"Int";}}s:4:"icon";a:2:{s:6:"access";i:347;s:5:"value";s:37:"dashboard/images/google-analytics.png";}s:8:"priority";a:2:{s:6:"access";i:347;s:5:"value";i:1;}}}

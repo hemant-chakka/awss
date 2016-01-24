@@ -1,0 +1,116 @@
+/* 
+*  Highslide site styles
+*  DO NOT EDIT. Generated on 2011-01-20 20:05:38 (GMT) by the Highslide Configuration Component 2.0.10
+*/
+
+.highslide-active-anchor img {
+	visibility: hidden;
+}
+.highslide-dimming {
+	width: 100%;
+	background: black;
+}
+/* Beginning of inserted CSS configuration parameters */
+.control {
+	float: right;
+    display: block;
+	margin: 0 5px;
+	font-size: 9pt;
+    font-weight: bold;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+/* Controlbar examples */
+.controlbar {
+	background: url(/plugins/content/highslide/graphics/controlbar4.gif);
+	width: 167px;
+	height: 34px;
+}
+.controlbar a {
+	display: block;
+	float: left;
+	/*margin: 0px 0 0 4px;*/
+	height: 27px;
+}
+.controlbar a:hover {
+	background-image: url(/plugins/content/highslide/graphics/controlbar4-hover.gif);
+}
+.controlbar .previous {
+	width: 50px;
+}
+.controlbar .next {
+	width: 40px;
+	background-position: -50px 0;
+}
+.controlbar .highslide-move {
+	width: 40px;
+	background-position: -90px 0;
+}
+.controlbar .close {
+	width: 36px;
+	background-position: -130px 0;
+}
+/* Controlbar example */
+.controlbar2 {
+	margin-left: 60px;
+	background: url(/plugins/content/highslide/graphics/controlbar2.gif);
+	width: 210px;
+	height: 32px;
+}
+.controlbar2 a {
+	display: block;
+	float: left;
+	margin: 0 0 0 5px;
+	height: 30px;
+	width: 42px;
+}
+
+.html-header {
+	background-image: url(/plugins/content/highslide/graphics/header-background.gif);
+	cursor: default;
+	height: 18px;
+	padding: 2px;
+}
+
+
+.highslide img {
+border:none;
+}
+.controls-in-heading, .highslide-heading {
+background: none;
+}
+
+.controls-in-heading .highslide-controls .highslide-full-expand a.disabled {
+background: #fff;
+}
+
+.controls-in-heading .highslide-controls .highslide-play a:hover {
+background: #fff;
+}
+
+.controls-in-heading .highslide-controls .highslide-play a {
+background: #fff;
+}
+
+.controls-in-heading .highslide-controls .highslide-pause a {
+background: #fff;
+}
+
+.controls-in-heading .highslide-controls .highslide-pause a:hover{
+background: #fff;
+}
+
+li.highslide-play, li.highslide-pause, li.highslide-play a, li.highslide-pause a {
+display: none;
+}
+
+div a.highslide-credits {
+left:-9999px;
+position:absolute;
+}
+
+
+#hsId2 {
+display: none;
+}
+/* End of inserted CSS configuration parameters */

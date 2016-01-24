@@ -1,0 +1,1 @@
+a:1:{s:4:"Page";a:2:{s:2:"db";a:2:{s:6:"access";i:347;s:5:"value";a:3:{s:12:"ContentRight";s:8:"HTMLText";s:12:"CustomerView";s:7:"Boolean";s:13:"TitleBarTitle";s:12:"Varchar(255)";}}s:7:"has_one";a:2:{s:6:"access";i:347;s:5:"value";a:0:{}}}}

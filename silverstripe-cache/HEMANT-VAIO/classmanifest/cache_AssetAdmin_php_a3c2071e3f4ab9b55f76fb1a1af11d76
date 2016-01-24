@@ -1,0 +1,1 @@
+a:3:{s:7:"classes";a:2:{i:0;a:3:{s:9:"className";s:10:"AssetAdmin";s:7:"extends";a:1:{i:0;s:11:"LeftAndMain";}s:10:"interfaces";a:1:{i:0;s:18:"PermissionProvider";}}i:1;a:2:{s:9:"className";s:28:"AssetAdmin_DeleteBatchAction";s:7:"extends";a:1:{i:0;s:14:"CMSBatchAction";}}}s:10:"interfaces";a:0:{}s:9:"namespace";s:0:"";}

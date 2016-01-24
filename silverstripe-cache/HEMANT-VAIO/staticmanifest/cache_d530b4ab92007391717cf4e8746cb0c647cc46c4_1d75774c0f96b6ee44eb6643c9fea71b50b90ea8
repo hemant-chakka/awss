@@ -1,0 +1,1 @@
+a:1:{s:5:"Order";a:2:{s:2:"db";a:2:{s:6:"access";i:347;s:5:"value";a:4:{s:11:"OrderStatus";s:11:"Varchar(10)";s:6:"Amount";s:8:"Currency";s:17:"JoomlaOrderNumber";s:11:"Varchar(32)";s:7:"IsTrial";s:7:"Boolean";}}s:7:"has_one";a:2:{s:6:"access";i:347;s:5:"value";a:3:{s:6:"Member";s:6:"Member";s:7:"Product";s:7:"Product";s:10:"CreditCard";s:10:"CreditCard";}}}}

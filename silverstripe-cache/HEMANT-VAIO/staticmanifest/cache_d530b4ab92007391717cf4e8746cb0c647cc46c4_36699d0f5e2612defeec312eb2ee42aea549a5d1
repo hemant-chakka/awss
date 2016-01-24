@@ -1,0 +1,1 @@
+a:1:{s:25:"DashboardRecentEditsPanel";a:4:{s:2:"db";a:2:{s:6:"access";i:347;s:5:"value";a:1:{s:5:"Count";s:3:"Int";}}s:8:"defaults";a:2:{s:6:"access";i:347;s:5:"value";a:1:{s:5:"Count";i:10;}}s:4:"icon";a:2:{s:6:"access";i:347;s:5:"value";s:33:"dashboard/images/recent-edits.png";}s:8:"priority";a:2:{s:6:"access";i:347;s:5:"value";i:10;}}}

@@ -1,0 +1,1 @@
+a:1:{s:24:"DashboardQuickLinksPanel";a:4:{s:8:"has_many";a:2:{s:6:"access";i:347;s:5:"value";a:1:{s:5:"Links";s:18:"DashboardQuickLink";}}s:8:"defaults";a:2:{s:6:"access";i:347;s:5:"value";a:1:{s:9:"PanelSize";s:5:"small";}}s:4:"icon";a:2:{s:6:"access";i:347;s:5:"value";s:32:"dashboard/images/quick-links.png";}s:19:"configure_on_create";a:2:{s:6:"access";i:347;s:5:"value";b:1;}}}

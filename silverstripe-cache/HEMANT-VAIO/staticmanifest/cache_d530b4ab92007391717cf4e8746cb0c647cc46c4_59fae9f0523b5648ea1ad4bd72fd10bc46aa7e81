@@ -1,0 +1,1 @@
+a:1:{s:35:"DashboardRevenueUnitsByProductPanel";a:3:{s:2:"db";a:2:{s:6:"access";i:347;s:5:"value";a:3:{s:9:"StartDate";s:4:"Date";s:7:"EndDate";s:4:"Date";s:14:"SelectCriteria";s:30:"Enum(array("Revenue","Units"))";}}s:4:"icon";a:2:{s:6:"access";i:347;s:5:"value";s:37:"dashboard/images/google-analytics.png";}s:8:"priority";a:2:{s:6:"access";i:347;s:5:"value";i:3;}}}

@@ -1,0 +1,81 @@
+ul.optionset {
+	list-style: none !important;
+	padding-left: 0px !important;
+	margin-left: 0px !important; 
+}
+
+.holder-required {
+    background-color:#ffb8b8;
+}
+.message.bad,.message.validation{ 
+	background-color:#FFDFDF;
+	color: 000;
+	padding:3px 0px;
+}
+
+.message.good{ 
+	background-color:#8FBC8F;
+	color: 000;
+	padding:3px 0px;
+}
+.message.fail{ 
+	padding:10px;
+    margin: 10px 10px 0;
+    border: 1px solid #FFF;
+	color: #DA1D1D;
+    background: #FFDFDF;
+    border-color: #FFBBBB;
+}
+
+.message .success{ 
+	padding:10px;
+    margin: 10px 10px 0;
+    border: 1px solid #FFF;
+	color:#3E933A;
+    background:#E2F7D8;
+    border-color:#9FDE9C;
+}
+.message.success{ 
+	padding:10px;
+    margin: 10px 10px 0;
+    border: 1px solid #FFF;
+	color:#3E933A;
+    background:#E2F7D8;
+    border-color:#9FDE9C;
+}
+
+/* Registration form */
+
+.signup_box { 
+	width:380px;
+	padding:0px 0px 10px 0px;
+}
+
+.signup_box h3{ text-align:center !important;}
+
+#Form_RegistrationForm #Email{margin-left:5px;}
+
+#Form_RegistrationForm #Email label,
+#Form_RegistrationForm .password label,
+#Form_RegistrationForm .password label 
+{ 
+	width:140px;
+	display:inline-block;
+}
+
+#Form_RegistrationForm .field { 
+	padding:5px;
+}
+
+#Form_RegistrationForm #Email .middleColumn,
+#Form_RegistrationForm .password .middleColumn,
+#Form_RegistrationForm .password .middleColumn
+{ display: inline-block;}
+
+#Form_RegistrationForm input[type="Email"],input[type="Password"]{
+	border: solid 1px #CCCCCC;
+}
+
+#Form_RegistrationForm .Actions{
+	margin-left:200px;
+}
