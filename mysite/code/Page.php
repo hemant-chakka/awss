@@ -23,7 +23,7 @@ class Page extends SiteTree {
       return $fields; 
     }
     
-    // To find if the user is a current subscriber or not // test test
+    // To find if the user is a current subscriber or not
     public function isSubscriber($memberId){
     	$subscription = Subscription::get()->filter(array(
 		    'MemberID' => $memberId,
