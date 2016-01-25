@@ -1,1 +1,0 @@
-a:1:{s:30:"DashboardHasManyRelationEditor";a:2:{s:15:"allowed_actions";a:2:{s:6:"access";i:347;s:5:"value";a:1:{i:0;s:10:"handleItem";}}s:12:"url_handlers";a:2:{s:6:"access";i:347;s:5:"value";a:2:{s:8:"item/$ID";s:10:"handleItem";s:8:"$Action!";s:7:"$Action";}}}}

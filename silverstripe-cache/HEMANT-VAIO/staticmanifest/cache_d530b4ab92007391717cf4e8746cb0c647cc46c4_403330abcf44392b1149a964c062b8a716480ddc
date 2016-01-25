@@ -1,1 +1,0 @@
-a:1:{s:24:"DashboardModelAdminPanel";a:3:{s:2:"db";a:2:{s:6:"access";i:347;s:5:"value";a:3:{s:5:"Count";s:3:"Int";s:15:"ModelAdminClass";s:7:"Varchar";s:15:"ModelAdminModel";s:7:"Varchar";}}s:8:"defaults";a:2:{s:6:"access";i:347;s:5:"value";a:1:{s:5:"Count";i:10;}}s:19:"configure_on_create";a:2:{s:6:"access";i:347;s:5:"value";b:1;}}}

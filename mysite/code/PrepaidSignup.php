@@ -23,12 +23,10 @@ class PrepaidSignup_Controller extends Page_Controller
 	function PrepaidSignupForm()
 	{
 		$cardType = array(
-	    		"visa"=>"<img src='themes/attwiz/images/visa.png' height=20px></img>",
-	    		"mc"=>"<img src='themes/attwiz/images/mastercard.jpeg' height=20px></img>",
-	    		"ae"=>"<img src='themes/attwiz/images/ae.jpeg' height=20px></img>",
-	    		"discover"=>"<img src='themes/attwiz/images/discover.jpeg' height=20px></img>",
-	    		"diners"=>"<img src='themes/attwiz/images/dinnerclub.jpeg' height=20px></img>",
-	    		"jcb"=>"<img src='themes/attwiz/images/jcb.jpeg' height=20px></img>"
+	    		"visa"=>"<img src='themes/attwiz/images/visa.png' height=30px></img>",
+	    		"mc"=>"<img src='themes/attwiz/images/mastercard.jpeg' height=30px></img>",
+	    		"ae"=>"<img src='themes/attwiz/images/ae.jpeg' height=30px></img>",
+	    		"discover"=>"<img src='themes/attwiz/images/discover.jpeg' height=30px></img>"
 	    );
 	    $monthArray = array();
 	    for($i =1;$i <=12; $i++){

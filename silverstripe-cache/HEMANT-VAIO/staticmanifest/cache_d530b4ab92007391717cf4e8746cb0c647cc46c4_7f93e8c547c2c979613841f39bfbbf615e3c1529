@@ -1,1 +1,0 @@
-a:1:{s:27:"DashboardSectionEditorPanel";a:3:{s:2:"db";a:2:{s:6:"access";i:347;s:5:"value";a:3:{s:8:"ParentID";s:3:"Int";s:7:"Subject";s:7:"Varchar";s:5:"Count";s:3:"Int";}}s:8:"defaults";a:2:{s:6:"access";i:347;s:5:"value";a:1:{s:5:"Count";i:10;}}s:19:"configure_on_create";a:2:{s:6:"access";i:347;s:5:"value";b:1;}}}

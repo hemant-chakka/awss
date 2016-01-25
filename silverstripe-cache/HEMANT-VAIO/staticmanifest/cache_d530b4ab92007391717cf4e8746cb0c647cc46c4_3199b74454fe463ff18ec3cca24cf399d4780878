@@ -1,1 +1,0 @@
-a:1:{s:13:"MemberCredits";a:2:{s:2:"db";a:2:{s:6:"access";i:347;s:5:"value";a:2:{s:7:"Credits";s:3:"Int";s:10:"ExpireDate";s:11:"SS_Datetime";}}s:7:"has_one";a:2:{s:6:"access";i:347;s:5:"value";a:3:{s:6:"Member";s:6:"Member";s:7:"Product";s:7:"Product";s:12:"Subscription";s:12:"Subscription";}}}}

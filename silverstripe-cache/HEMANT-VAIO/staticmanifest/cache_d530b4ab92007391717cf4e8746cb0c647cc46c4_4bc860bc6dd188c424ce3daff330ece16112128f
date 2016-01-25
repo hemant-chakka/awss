@@ -1,1 +1,0 @@
-a:1:{s:18:"DashboardQuickLink";a:2:{s:2:"db";a:2:{s:6:"access";i:347;s:5:"value";a:3:{s:4:"Link";s:12:"Varchar(255)";s:4:"Text";s:11:"Varchar(50)";s:9:"NewWindow";s:7:"Boolean";}}s:11:"label_field";a:2:{s:6:"access";i:347;s:5:"value";s:4:"Text";}}}

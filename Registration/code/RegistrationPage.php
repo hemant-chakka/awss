@@ -75,11 +75,17 @@ class RegistrationPage_Controller extends Page_Controller
 	public function validateSignup(){
 		$data = $_POST;
 		$messages = array();
-		if(!isset($data['Email']))
+		if($data['Email'] == '')
 			$messages[] = "* Email address is required";
 		
-		if(empty($data['Password']))
+		if($data['Password']['_Password'] == '' && $data['Password']['_ConfirmPassword'] == '')
 			$messages[] = "* Password is required";
+			
+		if($data['Password']['_Password'] !=  $data['Password']['_ConfirmPassword'])
+			$messages[] = "* Password and Confirm Password fields do not match, please re-enter them";
+		
+		if(strlen($data['Password']['_Password']) < 6)
+			$messages[] = "* Your password must be at least 6 characters long, please enter a longer password.";
 		
 		if(!isset($data['Terms']))
 			$messages[] = "* Please Accept the AttentionWizard Terms of Use";
@@ -87,9 +93,9 @@ class RegistrationPage_Controller extends Page_Controller
 	    $str = '';
 	    foreach ($messages as $message){
 	    	if($str == '')
-	    		$str.= "$message </br>";
-	    	else 
 	    		$str = "$message </br>";
+	    	else 
+	    		$str .= "$message </br>";
 	    }
 		
 	    return $str;

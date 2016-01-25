@@ -1,1 +1,0 @@
-a:1:{s:24:"PrepaidSignup_Controller";a:1:{s:15:"allowed_actions";a:2:{s:6:"access";i:347;s:5:"value";a:2:{i:0;s:17:"PrepaidSignupForm";i:1;s:15:"doPrepaidSignup";}}}}

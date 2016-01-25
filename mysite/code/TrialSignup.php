@@ -22,12 +22,10 @@ class TrialSignup_Controller extends Page_Controller
 	//Generate the Trial Signup form
 	function TrialSignupForm(){
 	    $cardType = array(
-	    	"visa"=>"<img src='themes/attwiz/images/visa.png' height=20px></img>",
-	    	"mc"=>"<img src='themes/attwiz/images/mastercard.jpeg' height=20px></img>",
-	    	"ae"=>"<img src='themes/attwiz/images/ae.jpeg' height=20px></img>",
-	    	"discover"=>"<img src='themes/attwiz/images/discover.jpeg' height=20px></img>",
-	    	"diners"=>"<img src='themes/attwiz/images/dinnerclub.jpeg' height=20px></img>",
-	    	"jcb"=>"<img src='themes/attwiz/images/jcb.jpeg' height=20px></img>"
+	    	"visa"=>"<img src='themes/attwiz/images/visa.png' height=30px></img>",
+	    	"mc"=>"<img src='themes/attwiz/images/mastercard.jpeg' height=30px></img>",
+	    	"ae"=>"<img src='themes/attwiz/images/ae.jpeg' height=30px></img>",
+	    	"discover"=>"<img src='themes/attwiz/images/discover.jpeg' height=30px></img>"
 	    );
 	    $monthArray = array();
 	    for($i =1;$i <=12; $i++){
@@ -378,6 +376,16 @@ class TrialSignup_Controller extends Page_Controller
 		$data = $_POST;
 		if($this->isCCUsedForTrial("{$data['CreditCardNumber']}") && ($data['SubscriptionType'] == 1))
 			return "inlineMsg1";
+		$currentYear = date('Y');
+		$currentMonth = date('n');
+		//Stop sign-up when the credit card is expired
+		if($data['ExpirationYear'] < $currentYear){
+			return "inlineMsg4";
+		}
+		if ($data['ExpirationYear'] == $currentYear){
+			if($data['ExpirationMonth'] <= $currentMonth)
+				return "inlineMsg4";
+		}
 		//Get InfusionSoft Api
 		$app = $this->getInfusionSoftApi();
 		//Get current date

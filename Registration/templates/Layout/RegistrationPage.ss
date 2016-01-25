@@ -22,7 +22,7 @@ $Content
 
 <p style="display: none;"><a class="fancybox" id="showEmailErrorMessage2" href="#inline12">Inline</a></p>
 <div style="display: none;">
-     <div id="inline12" style="width:400px;height:150px;">
+     <div id="inline12" style="width:400px;height:100px;">
            <div id="alert-BoxContenedor" class="BoxAlert">
                  <h2>Oops. There was a problem.</h2>
                  <br>
@@ -30,9 +30,6 @@ $Content
            </div>
       </div>
 </div>
-
-
-
 
 <p style="display: none;"><a class="fancybox" id="showPasswordErrorMessage" href="#inline2">Inline</a></p>
 <div style="display: none;">
@@ -48,7 +45,7 @@ $Content
 
 <p style="display: none;"><a class="fancybox" id="listErrorMessages" href="#inline3">Inline</a></p>
 <div style="display: none;">
-     <div id="inline3" style="width:400px;height:100px;">
+     <div id="inline3" style="width:400px;height:150px;">
            <div id="alert-BoxContenedor" class="BoxAlert">
                  <h2>Oops. There was a problem.</h2>
                  <br>

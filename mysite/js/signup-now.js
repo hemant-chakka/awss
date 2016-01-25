@@ -26,13 +26,16 @@
 			} 
 		});
 		
-		$("#Form_RegistrationForm").submit( function(e){
+		$('#Form_RegistrationForm_action_doRegister').hide();
+		$('#Form_RegistrationForm_action_doRegister').after('<button style="border:none;background-color:transparent;" id="Form_RegistrationForm_button_doRegister"><img src="themes/attwiz/images/button_continue.gif"></img></button>');
+		$("#Form_RegistrationForm_button_doRegister").click( function(e){
 			e.preventDefault();
-			$.post( "/sign-up-now/validateSignup",$(this).serialize(),function( data ) {
+			$.post( "/sign-up-now/validateSignup",$("#Form_RegistrationForm").serialize(),function( data ) {
 				if(data != ''){
 					$( "#ErrorMessages" ).html(data);
 					$( "#listErrorMessages" ).click();
-					e.preventDefault();
+				}else{
+					$("#Form_RegistrationForm").submit();
 				}
 			});
 		});

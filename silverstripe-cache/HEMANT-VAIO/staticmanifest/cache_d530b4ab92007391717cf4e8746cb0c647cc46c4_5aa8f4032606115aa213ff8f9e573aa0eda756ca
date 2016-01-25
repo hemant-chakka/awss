@@ -1,1 +1,0 @@
-a:1:{s:22:"Dashboard_PanelRequest";a:2:{s:12:"url_handlers";a:2:{s:6:"access";i:347;s:5:"value";a:2:{s:8:"$Action!";s:7:"$Action";s:0:"";s:5:"panel";}}s:15:"allowed_actions";a:2:{s:6:"access";i:347;s:5:"value";a:4:{i:0;s:5:"panel";i:1;s:6:"delete";i:2;s:13:"ConfigureForm";i:3;s:17:"saveConfiguration";}}}}
