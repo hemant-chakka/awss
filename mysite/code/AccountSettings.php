@@ -216,7 +216,7 @@ class AccountSettings_Controller extends Page_Controller {
 		if($subscriptionID && is_int($subscriptionID)){
 			if($productID == 1 && !$this->isCCUsedForTrial($creditCard->CreditCardNumber)){
 				$orderAmount = $product->TrialPrice;
-				$productName = "30 days 1-cent Trial";
+				$productName = "30 days 1-dollar Trial";
 				$isProductID = 38;
 				$trial = 1;
 				$subscriptionCount = 0;

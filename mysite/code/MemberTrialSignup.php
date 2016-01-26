@@ -175,7 +175,7 @@ class MemberTrialSignup_Controller extends Page_Controller
 		if($subscriptionID && is_int($subscriptionID)){
 			if($data['SubscriptionType'] == 1 && !$member->SignUpTrial){
 				$orderAmount = $product->TrialPrice;
-				$productName = "30 days 1-cent Trial";
+				$productName = "30 days 1-dollar Trial";
 				$isProductID = 38;
 				$trial = 1;
 				$subscriptionCount = 0;

@@ -154,7 +154,7 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 			if($subscriptionID && is_int($subscriptionID)){
 				if($productId == 1 && !$Page_Ctrl->isCCUsedForTrial($creditCard->CreditCardNumber)){
 					$orderAmount = $product->TrialPrice;
-					$productName = "30 days 1-cent Trial";
+					$productName = "30 days 1-dollar Trial";
 					$isProductID = 38;
 					$trial = 1;
 					$subscriptionCount = 0;

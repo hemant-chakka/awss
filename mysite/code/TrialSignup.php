@@ -190,7 +190,7 @@ class TrialSignup_Controller extends Page_Controller
 		$credits = $product->Credits;
 		if($data['SubscriptionType'] == 1){
 			$orderAmount = $product->TrialPrice;
-			$productName = "30 days 1-cent Trial";
+			$productName = "30 days 1-dollar Trial";
 			$isProductID = 38;
 		}else{
 			$productName = $product->Name;
@@ -475,7 +475,7 @@ class TrialSignup_Controller extends Page_Controller
 		$credits = $product->Credits;
 		if($data['SubscriptionType'] == 1){
 			$orderAmount = $product->TrialPrice;
-			$productName = "30 days 1-cent Trial";
+			$productName = "30 days 1-dollar Trial";
 			$isProductID = 38;
 		}else{
 			$productName = $product->Name;
