@@ -58,7 +58,7 @@
 <% if recentHeatmap %>
 	<% loop recentHeatmap %>
 		<table id="download-recent-heatmap">
-			<tr><td colspan = 3 class="title">Download Current Heatmap</td></tr>
+			<tr><td colspan = 3 class="title">Heatmap Successfully Created</td></tr>
 			<tr>
 				<td>$OriginalImage.CroppedImage(75,90)</td>
 				<td>$Heatmap.CroppedImage(75,90)</td>
