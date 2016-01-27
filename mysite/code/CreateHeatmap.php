@@ -33,7 +33,8 @@ class CreateHeatmap_Controller extends Page_Controller {
 		);
 		$fields = new FieldList(
 				$imageField = new FileField('OriginalImage','Upload an Image File'),
-				new LiteralField('UploadInfo','Acceptable images are jpg or png, 500-1600 pixels wide by 500-1200 pixels height'),
+				new LiteralField('Underline','<hr>'),
+				new LiteralField('UploadInfo','Acceptable images are jpg or png, 500-1600 pixels wide by 500-1200 pixels height.<hr>'),
 				new OptionsetField('IncludeWatermark','Include Watermark?',$includeWatermark,1)
 				
 		);

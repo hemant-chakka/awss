@@ -27,6 +27,8 @@
 	        }
 		});
 	
+		$("#OriginalImage label").after('<hr>');
+		
 		$("#Form_CreateHeatmapForm").submit( function(e){
 			e.preventDefault();
 			$("#inlineMsg1").click();

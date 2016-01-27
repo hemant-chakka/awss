@@ -6,10 +6,13 @@ $Content
 
 <p style="display: none;"><a class="fancybox2" id="inlineMsg1" href="#inline1">Inline</a></p>
 <div style="display: none;">
-     <div id="inline1" class="Loading" style="width:400px;height:100px;">
+     <div id="inline1" class="Loading" style="width:400px;height:120px;">
            <div>
 			 <h1>Creating Heatmap...</h1>
-			 <span class="waiting">Please wait,this transaction may take several minutes.</span>
+			 <span class="waiting">
+			 	Please be patient, this may take a minute or more.<br/>
+				Please do not close this window.
+			 </span>
 			 <div><centre><img src="/themes/attwiz/images/spiffygif_white.gif"</center></div>
 			</div>
       </div>

@@ -36,8 +36,14 @@
 					$( "#listErrorMessages" ).click();
 				}else{
 					$("#Form_RegistrationForm").submit();
+					$('#Form_RegistrationForm').unbind('submit');
 				}
 			});
+		});
+		
+		$('#Form_RegistrationForm').submit( function(e){
+			e.preventDefault();
+			$("#Form_RegistrationForm_button_doRegister").click();
 		});
 	});
 })(jQuery)      

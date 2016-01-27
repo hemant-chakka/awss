@@ -120,6 +120,7 @@ class Page_Controller extends ContentController {
 		Requirements::javascript(FRAMEWORK_DIR . '/thirdparty/jquery/jquery.min.js');
 		Requirements::css('assets/fancybox/jquery.fancybox.css');
 		Requirements::javascript('assets/fancybox/jquery.fancybox.js');
+		Requirements::javascript('mysite/js/common.js');
 	}
 	// Get InfusionSoft API object
 	public function getInfusionSoftApi(){
