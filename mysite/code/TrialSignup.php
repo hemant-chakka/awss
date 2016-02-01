@@ -47,12 +47,7 @@ class TrialSignup_Controller extends Page_Controller
 	    		"2"=>"Silver - (50 heatmaps for $97.00 / month)",
 	    		"3"=>"Gold - (200 heatmaps for $197.00 / month)"
 	    );
-	    /*
-	    $countries1 = array('Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and Barbuda', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'The Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo, Republic of the', 'Congo, Democratic Republic of the', 'Costa Rica', 'Cote d\'Ivoire', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'Timor-Leste', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea, North', 'Korea, South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia, Federated States of', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar (Burma)', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russia', 'Rwanda', 'Saint Kitts and Nevis', 'Saint Lucia', 'Saint Vincent and the Grenadines', 'Samoa', 'San Marino', 'Sao Tome and Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City (Holy See)', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe');
-		$countries2 = array();
-		foreach ($countries1 as $country){
-			$countries2[$country] = $country;
-		} */
+		$whatsThis = '<span id="WhatsThis"><a id="WhatsThisImage" href="themes/attwiz/images/cvv.jpg" title="What\'s this?">What\'s this?</a></span>';
 		$fields = new FieldList(
 			new TextField('FirstName', 'First Name'),
 			new TextField('LastName', 'Last Name'),
@@ -62,12 +57,12 @@ class TrialSignup_Controller extends Page_Controller
 			new TextField('City', 'City'),
 			new TextField('State', 'State/Province'),
 			new TextField('PostalCode', 'Zip/Poatal Code'),
-			//new DropdownField('Country','Country',$countries2),
 			new CountryDropdownField('Country'),
 			new OptionsetField('CreditCardType','Credit Card Type',$cardType,'visa'),
 			new TextField('NameOnCard', 'Name On Card'),
 			new NumericField('CreditCardNumber', 'Credit Card Number'),
 			new PasswordField('CVVCode', 'Security/CVV Code'),
+			new LiteralField('WhatIsThis', $whatsThis),
 			new DropdownField('ExpirationMonth','Expiration Date',$monthArray),
 			new DropdownField('ExpirationYear','',$yearArray),
 			new LiteralField('SubscriptionInfo', $subscriptionInfo),
@@ -383,7 +378,7 @@ class TrialSignup_Controller extends Page_Controller
 			return "inlineMsg4";
 		}
 		if ($data['ExpirationYear'] == $currentYear){
-			if($data['ExpirationMonth'] <= $currentMonth)
+			if($data['ExpirationMonth'] < $currentMonth)
 				return "inlineMsg4";
 		}
 		//Get InfusionSoft Api

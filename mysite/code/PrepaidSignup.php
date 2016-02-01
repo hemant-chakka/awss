@@ -40,6 +40,7 @@ class PrepaidSignup_Controller extends Page_Controller
 	    $trialExpiryDate = date('F-j-Y',mktime(0,0,0,date('n')+1,date('j'),date('Y')));
 		$price = Product::get()->byID(7)->Price;
 	    $shoppingCart = $this->renderWith('PrepaidShoppingCart',array('Price' => $price));
+	    $whatsThis = '<span id="WhatsThis"><a id="WhatsThisImage" href="themes/attwiz/images/cvv.jpg" title="What\'s this?">What\'s this?</a></span>';
 	    $fields = new FieldList(
 			new LiteralField('SignupTitle', '<h2>Create Your Account</h2>'),
 			new EmailField('Email', 'Email'),
@@ -59,6 +60,7 @@ class PrepaidSignup_Controller extends Page_Controller
 			new TextField('NameOnCard', 'Name On Card'),
 			new TextField('CreditCardNumber', 'Credit Card Number'),
 			new PasswordField('CVVCode', 'Security/CVV Code'),
+	    	new LiteralField('WhatIsThis', $whatsThis),
 			new DropdownField('ExpirationMonth','Expiration Date',$monthArray),
 			new DropdownField('ExpirationYear','',$yearArray),
 			new LiteralField('ShoppingCart', $shoppingCart),
@@ -280,6 +282,16 @@ class PrepaidSignup_Controller extends Page_Controller
 		//Check for existing member email address
 		if($member = DataObject::get_one("Member", "`Email` = '". Convert::raw2sql($data['Email']) . "'"))
 			return "inlineMsg1";
+		$currentYear = date('Y');
+		$currentMonth = date('n');
+		//Stop sign-up when the credit card is expired
+		if($data['ExpirationYear'] < $currentYear){
+			return "inlineMsg6";
+		}
+		if ($data['ExpirationYear'] == $currentYear){
+			if($data['ExpirationMonth'] < $currentMonth)
+				return "inlineMsg6";
+		}
 		//Get InfusionSoft Api
 		$app = $this->getInfusionSoftApi();
 		// Get country text from code

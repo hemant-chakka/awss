@@ -53,8 +53,6 @@ ul.optionset {
 
 .signup_box h3{ text-align:center !important;}
 
-#Form_RegistrationForm #Email{margin-left:5px;}
-
 #Form_RegistrationForm #Email label,
 #Form_RegistrationForm .password label,
 #Form_RegistrationForm .password label 
@@ -63,14 +61,11 @@ ul.optionset {
 	display:inline-block;
 }
 
-#Form_RegistrationForm .field { 
-	padding:5px;
+#Form_RegistrationForm #Email .middleColumn, 
+#Form_RegistrationForm .password .middleColumn, 
+#Form_RegistrationForm .password .middleColumn {
+    display: inline-block;
 }
-
-#Form_RegistrationForm #Email .middleColumn,
-#Form_RegistrationForm .password .middleColumn,
-#Form_RegistrationForm .password .middleColumn
-{ display: inline-block;}
 
 #Form_RegistrationForm input[type="Email"],input[type="Password"]{
 	border: solid 1px #CCCCCC;
@@ -78,4 +73,97 @@ ul.optionset {
 
 #Form_RegistrationForm .Actions{
 	margin-left:200px;
+}
+
+#Form_RegistrationForm .field { 
+	padding-bottom:10px;
+}
+
+/* Trial Sign-up form */
+
+#Form_TrialSignupForm label 
+{ 
+	width:140px;
+	display:inline-block;
+}
+
+#Form_TrialSignupForm_CreditCardType label,
+#Form_TrialSignupForm_ExpirationMonth,
+#Form_TrialSignupForm_ExpirationYear,
+#Form_TrialSignupForm_SubscriptionType label,
+#Agreement label
+{
+	width:inherit !important;
+}
+
+#Agreement label
+{
+	display:inline;
+}
+
+#CVVCode{
+	display:inline-block;
+}
+
+#WhatsThis{
+	display:inline-block;
+}
+
+
+#Form_TrialSignupForm .middleColumn
+{ 
+	display: inline-block;
+}
+
+#Form_TrialSignupForm .field { 
+	padding:5px;
+}
+
+
+#Form_TrialSignupForm input[type="text"],
+#Form_TrialSignupForm input[type="Email"],
+#Form_TrialSignupForm input[type="Password"],
+#Form_TrialSignupForm select {
+	width:250px;
+}
+
+/* Prepaid Sign-up form */
+
+#Form_PrepaidSignupForm label 
+{ 
+	width:140px;
+	display:inline-block;
+}
+
+#Form_PrepaidSignupForm_CreditCardType label,
+#Form_PrepaidSignupForm_ExpirationMonth,
+#Form_PrepaidSignupForm_ExpirationYear,
+#Form_PrepaidSignupForm_SubscriptionType label
+{
+	width:inherit !important;
+}
+
+#Form_PrepaidSignupForm .middleColumn
+{ 
+	display: inline-block;
+}
+
+#Form_PrepaidSignupForm .field { 
+	padding:5px;
+}
+
+
+#Form_PrepaidSignupForm input[type="text"],
+#Form_PrepaidSignupForm input[type="Email"],
+#Form_PrepaidSignupForm input[type="Password"],
+#Form_PrepaidSignupForm select {
+	width:250px;
+}
+
+#Form_PrepaidSignupForm #quantity {
+	width:inherit;
+}
+
+#Form_PrepaidSignupForm #Password .field {
+	padding-left:inherit;
 }

@@ -47,6 +47,14 @@
 	        }
 		});
 		
+		$("#WhatsThisImage").fancybox({
+	          helpers: {
+	              title : {
+	                  type : 'float'
+	              }
+	          }
+	    });
+		
 		$("#Form_PrepaidSignupForm_Email" ).focusout(function() {
 			var email = this.value;
 			$.post("/sign-up-now/EmailExists/?email="+email, function( data ) {

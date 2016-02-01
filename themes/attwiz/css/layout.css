@@ -2488,7 +2488,7 @@ width:500px;
 
 #ContactUsForm,#TrialSignupForm,#PrepaidSignupForm,#NonExpiringHeatmapsForm,.signup_box{
 	margin:auto;
-	padding:20px 50px;
+	padding:20px 20px;
 	background-color:#e6eff6;
 	border:1px solid #afc0d8;
 	border-radius:10px;
@@ -2589,7 +2589,7 @@ input[type="text"],input[type="Email"],input[type="Password"] {
 #Form_TrialSignupForm_CreditCardType input,#Form_MemberTrialSignupForm_CreditCardType input,#Form_PrepaidSignupForm_CreditCardType input,#Form_NonExpiringHeatmapsForm_CreditCardType input,#Form_MemberNonExpiringHeatmapsForm_CreditCardType input{ 
 	margin-left: 0px !important; 
 }
-#ExpiryMonth,#ExpirationMonth  { display: inline; }
+#ExpiryMonth,#ExpirationMonth  { display: inline-block; }
 #ExpiryMonth  label,#ExpirationMonth  label{ display: block; }
 #ExpiryMonth  .middleColumn,#ExpirationMonth  .middleColumn{ display: inline; }
 #ExpiryYear, #ExpirationYear { display: inline; }

@@ -401,7 +401,7 @@ class Page_Controller extends ContentController {
 		//Get the user details
 		$isContactId = intval($_REQUEST['Id']);
 		$email = $_REQUEST['Email'];
-		if($email != 'hemant.chakka@yahoo.com')
+		if($email != 'hemant.chakka@yahoo.com' && $email != 'stacey@sitetuners.com')
 			return false;
 		$productId = intval($this->request->param('ID'));
 		$member = Member::get()->filter(array(
@@ -465,7 +465,7 @@ class Page_Controller extends ContentController {
 		//Get the user details
 		$isContactId = intval($_REQUEST['Id']);
 		$emailAddress = $_REQUEST['Email'];
-		if($emailAddress != 'hemant.chakka@yahoo.com')
+		if($email != 'hemant.chakka@yahoo.com' && $email != 'stacey@sitetuners.com')
 			return false;
 		$productId = intval($this->request->param('ID'));
 		$member = Member::get()->filter(array(

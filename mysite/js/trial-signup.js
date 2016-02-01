@@ -27,6 +27,14 @@
 	        }
 		});
 		
+		$("#WhatsThisImage").fancybox({
+	          helpers: {
+	              title : {
+	                  type : 'float'
+	              }
+	          }
+	    });
+		
 		$("#Form_TrialSignupForm_SubscriptionType input").click( function(){
 			if(this.value == 1)
 				$("#Form_TrialSignupForm_action_doSignup").attr('src','themes/attwiz/images/button_startmytrialnow.gif');

@@ -62,3 +62,13 @@ $Content
          </div>
       </div>
 </div>
+
+<p style="display: none;"><a class="fancybox" id="inlineMsg6" href="#inline6">Inline</a></p>
+<div style="display: none;">
+     <div id="inline6" style="width:400px;height:100px;">
+         <div id="alert-BoxContenedor" class="BoxAlert">
+           	<h2>Oops. There was a problem.</h2>
+           	This credit card expires soon. Please use another credit card. your credit card has NOT been charged.
+         </div>
+      </div>
+</div>
