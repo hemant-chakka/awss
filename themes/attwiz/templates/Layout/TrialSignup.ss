@@ -11,7 +11,7 @@ $Content
      <div id="inline1" style="width:400px;height:100px;">
            <div id="alert-BoxContenedor" class="BoxAlert">
 			  <h2>We're Sorry.</h2><br>
-				This credit card has previously been used for the one cent trial. 
+				This credit card has previously been used for the one dollar trial. 
 				Only one trial may be purchased per credit card.
 		   </div>
       </div>
@@ -19,10 +19,10 @@ $Content
 
 <p style="display: none;"><a class="fancybox2" id="inlineMsg2" href="#inline2">Inline</a></p>
 <div style="display: none;">
-     <div id="inline2" class="Loading" style="width:400px;height:100px;">
+     <div id="inline2" class="Loading" style="width:400px;height:120px;">
            <div>
 			 <h1>Loading...</h1>
-			 <span class="waiting">Please wait,this transaction may take several minutes.</span>
+			 <span class="waiting">This transaction may take several minutes.<br />Please DO NOT click the Start my Trial button again.</span>
 			 <div><centre><img src="/themes/attwiz/images/spiffygif_white.gif"</center></div>
 			</div>
       </div>
@@ -45,6 +45,16 @@ $Content
          <div id="alert-BoxContenedor" class="BoxAlert">
            	<h2>Oops. There was a problem.</h2>
            	This credit card expires soon. Please use another credit card. your credit card has NOT been charged.
+         </div>
+      </div>
+</div>
+
+<p style="display: none;"><a class="fancybox" id="inlineMsg5" href="#inline5">Inline</a></p>
+<div style="display: none;">
+     <div id="inline5" style="width:400px;height:100px;">
+         <div id="alert-BoxContenedor" class="BoxAlert">
+           	<h2>Oops. There was a problem.</h2>
+           	Please <b>check the box indicating that you</b> understand that this is a recurring subscription.
          </div>
       </div>
 </div>

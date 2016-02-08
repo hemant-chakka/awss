@@ -15,6 +15,7 @@ class PrepaidSignup_Controller extends Page_Controller
 	
 	public function init() {
 		parent::init();
+		Requirements::javascript(FRAMEWORK_DIR . '/thirdparty/jquery-validate/jquery.validate.min.js');
 		Requirements::javascript('mysite/js/prepaid-signup.js');
 		SSViewer::setOption('rewriteHashlinks', false);
 	}
@@ -92,6 +93,7 @@ class PrepaidSignup_Controller extends Page_Controller
 							'ExpirationYear',
 							'OrderTotal'
 					);
+		$validator = null;
 	 	return new Form($this, 'PrepaidSignupForm', $fields, $actions, $validator);		
 	}
 	

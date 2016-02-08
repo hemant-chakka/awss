@@ -2728,3 +2728,22 @@ p#ErrorMessage {
 	padding-bottom: 15px;	
 }
 
+/* Pop-up messages */
+
+#alert-BoxContenedor{
+	text-align: left;
+    font-family: Verdana;
+    font-size: 12px;
+    color: #000;
+}
+
+
+#alert-BoxContenedor h2{
+	text-align: left;
+    font-family: Verdana;
+    font-size: 13px;
+    color: #990033;
+    font-weight: bold;
+    margin: 0px;
+    padding: 0px;
+}

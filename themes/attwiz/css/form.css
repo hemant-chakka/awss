@@ -167,3 +167,17 @@ ul.optionset {
 #Form_PrepaidSignupForm #Password .field {
 	padding-left:inherit;
 }
+
+/* Validation errors */
+
+input.error{
+	height: 17px;
+    padding: 0px;
+}
+
+label.error{
+	width: 70px !important;
+	padding-top:0px !important;
+	padding-left:5px !important;
+	color: rgb(255, 0, 0);
+}

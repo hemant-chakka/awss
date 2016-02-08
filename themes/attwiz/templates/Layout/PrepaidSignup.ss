@@ -43,10 +43,10 @@ $Content
 
 <p style="display: none;"><a class="fancybox2" id="inlineMsg4" href="#inline4">Inline</a></p>
 <div style="display: none;">
-     <div id="inline4" class="Loading" style="width:400px;height:100px;">
+     <div id="inline4" class="Loading" style="width:400px;height:120px;">
            <div>
 			 <h1>Loading...</h1>
-			 <span class="waiting">Please wait,this transaction may take several minutes.</span>
+			 <span class="waiting">This transaction may take several minutes.<br />Please DO NOT click the Start my Trial button again.</span>
 			 <div><centre><img src="/themes/attwiz/images/spiffygif_white.gif"</center></div>
 			</div>
       </div>
@@ -70,5 +70,16 @@ $Content
            	<h2>Oops. There was a problem.</h2>
            	This credit card expires soon. Please use another credit card. your credit card has NOT been charged.
          </div>
+      </div>
+</div>
+
+<p style="display: none;"><a class="fancybox" id="showEmailErrorMessage2" href="#inline7">Inline</a></p>
+<div style="display: none;">
+     <div id="inline7" style="width:400px;height:100px;">
+           <div id="alert-BoxContenedor" class="BoxAlert">
+                 <h2>Oops. There was a problem.</h2>
+                 <br>
+                 * Please enter a valid email address
+           </div>
       </div>
 </div>

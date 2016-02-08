@@ -15,6 +15,7 @@ class TrialSignup_Controller extends Page_Controller
 	
 	function init(){
 		parent::init();
+		Requirements::javascript(FRAMEWORK_DIR . '/thirdparty/jquery-validate/jquery.validate.min.js');
 		Requirements::javascript('mysite/js/trial-signup.js');
 		SSViewer::setOption('rewriteHashlinks', false);
 	}
@@ -69,7 +70,6 @@ class TrialSignup_Controller extends Page_Controller
 			new OptionsetField('SubscriptionType','',$subscriptionType,'1'),
 			new CheckboxField('Agreement',' I understand that this is a recurring subscription and I will be billed monthly unless I cancel.')
 		);
-	 	
 	    // Create action
 	    $actions = new FieldList(
 			$submit = new FormAction('doSignup','Start Trial')
@@ -91,13 +91,14 @@ class TrialSignup_Controller extends Page_Controller
 							'ExpirationMonth',
 							'ExpirationYear',
 							'SubscriptionInfo',
-							'SubscriptionType',
-							'Agreement'
+							'SubscriptionType'
 		);
+		
+		$validator = null;
 	 	$form = new Form($this, 'TrialSignupForm', $fields, $actions, $validator);
 	 	$data = Session::get("FormInfo.Form_TrialSignupForm.data"); 
 		if(is_array($data)) 
-		   $form->loadDataFrom($data); 
+		   $form->loadDataFrom($data);
 		return $form;		
 	}
 	//Process Trial Signup form
@@ -369,6 +370,9 @@ class TrialSignup_Controller extends Page_Controller
 	//Process Trial Signup form using ajax request
 	function doSignup(){
 		$data = $_POST;
+		//Stop sign-up if the user does not check the chebox
+		if(!isset($data['Agreement']))
+			return "inlineMsg5";
 		if($this->isCCUsedForTrial("{$data['CreditCardNumber']}") && ($data['SubscriptionType'] == 1))
 			return "inlineMsg1";
 		$currentYear = date('Y');
