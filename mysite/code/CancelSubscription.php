@@ -119,10 +119,11 @@ class CancelSubscription_Controller extends Page_Controller
 			// Set the subscription status to inactive
 			$subscription->Status = 0;
 			$subscription->IsTrial = 0;
+			$subscription->ReasonCancelled = $reasons;
 			$subscription->ExpireDate = date('Y-m-d H:i:s'); 
 			$subscription->write();
-			$product = $subscription->Product();
 			//Send an email to the user
+			$product = $subscription->Product();
 			$email = new Email();
 			$email->setSubject("Your {$product->Name} Subscription Has Been Cancelled");
         	$email->setFrom('support@attentionwizard.com');
@@ -137,7 +138,7 @@ class CancelSubscription_Controller extends Page_Controller
 			$this->setMessage('Success', 'The subscription is cancelled successfully.');
 			$this->redirect('/account-settings');
 		}else{
-			$this->setMessage('Error', 'Sorry the cancel subscription failed due to some reason,please try again later.');
+			$this->setMessage('Error', 'Sorry the subscription could not be cancelled due to some reason,please try again later.');
 			$this->redirect('/account-settings/#tabs-4');
 			return false;
 		}

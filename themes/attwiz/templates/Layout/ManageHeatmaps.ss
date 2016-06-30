@@ -120,7 +120,7 @@
 	    <% end_if %>
 	<% end_if %>
 <% else %>
-	<p>You have not created any heatmaps yet.</p>
+	<p style="margin-left:20px;">You have not created any heatmaps yet.</p>
 <% end_if %>
 
 

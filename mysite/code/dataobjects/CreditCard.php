@@ -99,8 +99,6 @@ class CreditCard extends DataObject {
 			$fields->replaceField('ISCCID', new HiddenField('ISCCID'));
 			$fields->replaceField('ExpiryMonth', new DropdownField('ExpiryMonth','Expiry Month',$monthArray,$this->ExpiryMonth));
 	    	$fields->replaceField('ExpiryYear', new DropdownField('ExpiryYear','Expiry Year',$yearArray,$this->ExpiryYear));
-	    	if($this->Current)
-	    		$fields->replaceField('Current', new HiddenField('Current',$this->Current));
     	}else{
     		$fields->addFieldToTab("Root.Main", new TextField('Keyword','Enter a keyword to search a member'),'MemberID');
 			$keyword = $fields->dataFieldByName('Keyword');

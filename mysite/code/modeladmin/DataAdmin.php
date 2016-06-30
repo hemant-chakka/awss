@@ -1,6 +1,6 @@
 <?php
 class DataAdmin extends ModelAdmin {
-	private static $managed_models = array('Product','Member','Subscription','CreditCard','Heatmaps','Faq','AccountFaq'); // Can manage multiple models
+	private static $managed_models = array('Product','Member','Order','Subscription','MemberCredits','CreditCard','Heatmaps','Faq','AccountFaq'); // Can manage multiple models
 	private static $url_segment = 'manage-data'; // Linked as /admin/products/
 	private static $menu_title = 'Manage Data';
 
@@ -30,6 +30,9 @@ class DataAdmin extends ModelAdmin {
 	    if($this->modelClass == 'Heatmaps') {
             $list = $list->exclude('Member.ID', null);
         }
+        if($this->modelClass == 'Order') {
+        	$list = $list->exclude('Member.ID', null);
+        }
         return $list;
     } 
 }
@@ -48,7 +51,12 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
        $formActions = $form->Actions(); 
        if ($actions = $this->record->getCMSActions()) 
            foreach ($actions as $action) 
-              $formActions->push($action); 
+              $formActions->push($action);
+       $dataObjectName = $this->record->ClassName;
+       if($dataObjectName == 'Subscription' || $dataObjectName == 'CreditCard'){
+       		$formActions->removeByName('action_doSave');
+       		$formActions->removeByName('action_doDelete');
+       }
        return $form; 
     }
     //Create a subscription  
@@ -64,6 +72,16 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 		// Get curent date
 		$curdate = $app->infuDate(date('j-n-Y'));
 		$member = Member::get()->byID($memberId);
+		//Find or create the 'user' group and add the member to the group
+		if(!$userGroup = DataObject::get_one('Group', "Code = 'customers'")){
+			$userGroup = new Group();
+			$userGroup->Code = "customers";
+			$userGroup->Title = "Customers";
+			$userGroup->Write();
+			$userGroup->Members()->add($member);
+		}else{
+			$userGroup->Members()->add($member);
+		}
 		$isConID = $member->ISContactID;
 		$product = Product::get()->byID($productId);
 		// Get existing credit card ID
@@ -98,7 +116,9 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 				);
 				$returnFields = array('_AttentionWizard');
 				$conDat1 = $app->loadCon($isConID,$returnFields);
-				if($conDat1['_AttentionWizard'] != 'Paid and Current' && $conDat1['_AttentionWizard'] != 'Free')
+				if(isset($conDat1['_AttentionWizard']) &&  $conDat1['_AttentionWizard'] != 'Paid and Current' && $conDat1['_AttentionWizard'] != 'Free')
+					$conDat['_AttentionWizard'] = 'Prepaid only - no subscription';
+				if(!isset($conDat1['_AttentionWizard']))
 					$conDat['_AttentionWizard'] = 'Prepaid only - no subscription';
 				$conID = $app->updateCon($isConID, $conDat);
 				// Note is added
@@ -143,7 +163,7 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 					'UserID'  => 1
 				);
 				$conActionID = $app->dsAdd("ContactAction", $conActionDat);
-				$form->sessionMessage("Sorry,the payment has failed,please update the user credit card.", 'bad');
+				$form->sessionMessage("Sorry,the payment failed,please update the user credit card.", 'bad');
 				return $this->edit(Controller::curr()->getRequest());
 			}
 		}
@@ -161,7 +181,7 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 				}else{
 					$productName = $product->Name;
 					$orderAmount = $product->RecurringPrice;
-					$isProductID = $product->ISProductID;
+					$isProductID = $product->ISInitialProductID;
 					$trial = 0;
 					$subscriptionCount = 1;
 				}
@@ -178,6 +198,9 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 				$orderItem = $app->addOrderItem($invoiceId, $isProductID, 9, floatval($orderAmount), 1, $productName, $productName);
 				$result = $app->chargeInvoice($invoiceId,$productName,$ccID,$config->MerchantAccount,false);
 				if($result['Successful']){
+					$nextBillDate = $Page_Ctrl->getSubscriptionNextBillDate($subscriptionID);
+					$expireDate= date('Y-m-d H:i:s', strtotime($nextBillDate));
+					$startDate= date('Y-m-d H:i:s', strtotime($expireDate. "-30 days"));
 					// Update order
 					$order->OrderStatus = 'c';
 					$order->IsTrial = $trial;
@@ -185,9 +208,8 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 					// Create a Subscription record
 					$subscription = new Subscription();
 					$subscription->SubscriptionID = $subscriptionID;
-					$subscription->StartDate = date("Y-m-d H:i:s");
-					$expireDate = strtotime("+30 days");
-					$subscription->ExpireDate = date("Y-m-d H:i:s",$expireDate);
+					$subscription->StartDate = $startDate;
+					$subscription->ExpireDate = $expireDate;
 					$subscription->Status = 1;
 					$subscription->IsTrial = $trial;
 					$subscription->SubscriptionCount = $subscriptionCount;
@@ -199,7 +221,7 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 					$memberCredits = new MemberCredits();
 					$memberCredits->Credits = $credits;
 					$memberCredits->Expire = 1;
-					$memberCredits->ExpireDate = date("Y-m-d H:i:s",$expireDate);
+					$memberCredits->ExpireDate = $expireDate;
 					$memberCredits->MemberID = $member->ID;
 					$memberCredits->ProductID = $productId;
 					$memberCredits->SubscriptionID = $subscription->ID;
@@ -244,16 +266,17 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 						if(!isset($conDat1['_AWstartdate']))
 							$conDat['_AWstartdate'] = $curdate;
 						$app->updateCon($isConID, $conDat);
-						// Note is added
+						//Add a note
 						$conActionDat = array('ContactId' => $isConID,
-							'ActionType'  => 'UPDATE',
-							'ActionDescription'  => "Renewed AW subscription",
-							'CreationDate'  => $curdate,
-							'ActionDate'  => $curdate,
-							'CompletionDate'  => $curdate,
-							'UserID'  => 1
+								'ActionType'  => 'UPDATE',
+								'ActionDescription'  => "Payment made for AW service",
+								'CreationDate'  => $curdate,
+								'ActionDate'  => $curdate,
+								'CompletionDate'  => $curdate,
+								'CreationNotes'     => "{$product->Name} Subscription",
+								'UserID'  => 1
 						);
-						$conActionID = $app->dsAdd("ContactAction", $conActionDat);
+						$app->dsAdd("ContactAction", $conActionDat);
 					}
 					// Remove previous cancel tags
 					$app->grpRemove($isConID, 2226);
@@ -289,7 +312,7 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 						'UserID'  => 1
 					);
 					$conActionID = $app->dsAdd("ContactAction", $conActionDat);
-					$form->sessionMessage("Sorry,the payment has failed due to some reason.please update the user credit card.", 'bad');
+					$form->sessionMessage("Sorry,the payment failed due to some reason.please update the user credit card.", 'bad');
 					return $this->edit(Controller::curr()->getRequest());
 				}
 			}else{
@@ -315,7 +338,7 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 					'UserID'  => 1
 				);
 				$conActionID = $app->dsAdd("ContactAction", $conActionDat);
-				$form->sessionMessage("Sorry,the subscription has failed due to some reason.please try again.", 'bad');
+				$form->sessionMessage("Sorry,the subscription failed due to some reason.please try again.", 'bad');
 				return $this->edit(Controller::curr()->getRequest());
 			}
 		}
@@ -325,7 +348,18 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 		//Get the record ID
 		$id = Controller::curr()->request->param('ID');
 		// Get the reasons for cancel
-		$reasons = $data['ReasonCancelled'];
+		if(empty($data['ReasonCancelled'])){
+			$form->sessionMessage("Please check atleast one of the resaons to cancel.", 'bad');
+			return $this->edit(Controller::curr()->getRequest());
+		}
+		// Get the reasons for cancel
+		$reasons = '';
+		foreach($data['ReasonCancelled'] as $reason){
+			if($reasons == '')
+				$reasons = $reason;
+				else
+					$reasons .= ", $reason";
+		}
 		// Get the subscription
 		$subscription = Subscription::get()->byID($id);
 		// Get the member
@@ -386,8 +420,22 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 			}
 			// Set the subscription status to inactive
 			$subscription->Status = 0;
+			$subscription->IsTrial = 0;
 			$subscription->ReasonCancelled = $reasons;
+			$subscription->ExpireDate = date('Y-m-d H:i:s');
 			$subscription->write();
+			//Send an email to the user
+			$product = $subscription->Product();
+			$email = new Email();
+			$email->setSubject("Your {$product->Name} Subscription Has Been Cancelled");
+			$email->setFrom('support@attentionwizard.com');
+			$email->setTo($member->Email);
+			$email->setTemplate('CancelSubscriptionEmail');
+			$email->populateTemplate(array(
+					'firstName' => $member->FirstName,
+					'lastName' => $member->Surname
+			));
+			$email->send();
 			$form->sessionMessage("Subscription is cancelled successfully.", 'good');
 			$randomNumber = rand();
 			return Controller::curr()->redirect("admin/manage-data/Subscription/EditForm/field/Subscription/item/{$subscription->ID}/edit?rand=$randomNumber");
@@ -405,7 +453,7 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 		//Get the new product ID
 		$newProductID = $data['ProductID'];
 		if($subscription->ProductID == $newProductID){
-			$form->sessionMessage("Please select a new subscription first.", 'bad');
+			$form->sessionMessage("Please select a new subscription.", 'bad');
 			return $this->edit(Controller::curr()->getRequest());
 		}
 		// Get the Page controller
@@ -423,7 +471,7 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 		//Get new product
 		$product = Product::get()->byID($newProductID);
 		$credits = $product->Credits;
-		$isProductID = $product->ISProductID;
+		$isProductID = $product->ISInitialProductID;
 		// Get the current InfusionSoft credit card ID
 		$creditCard = $Pg_Ctrl->getCurrentCreditCard($member->ID);
 		if(!$creditCard){
@@ -431,7 +479,7 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 			return $this->edit(Controller::curr()->getRequest());
 		}
 		$ccID = $creditCard->ISCCID;
-		$subscriptionID = $Pg_Ctrl->createISSubscription($isConID,$isProductID, $product->RecurringPrice, $ccID, 30);
+		$subscriptionID = $Pg_Ctrl->createISSubscription($isConID,$product->ISProductID, $product->RecurringPrice, $ccID, 30);
 		if($subscriptionID && is_int($subscriptionID)){
 			// Create an order
 			$order = new Order();
@@ -447,6 +495,9 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 			$orderItem = $app->addOrderItem($invoiceId, $isProductID, 9, floatval($product->RecurringPrice), 1,$product->Name, $product->Name);
 			$result = $app->chargeInvoice($invoiceId,$product->Name,$ccID,$config->MerchantAccount,false);
 			if($result['Successful']){
+				$nextBillDate = $Pg_Ctrl->getSubscriptionNextBillDate($subscriptionID);
+				$expireDate= date('Y-m-d H:i:s', strtotime($nextBillDate));
+				$startDate= date('Y-m-d H:i:s', strtotime($expireDate. "-30 days"));
 				//Set the current subscription to Inactive
 				$Pg_Ctrl->setSubscriptionStatus($subscription->SubscriptionID, 'Inactive');
 				//Remove trial tag if exists
@@ -481,9 +532,8 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 				$app->updateCon($isConID, $conDat);
 				//Create a new Subscription
 				$newSubscription = new Subscription();
-				$newSubscription->StartDate = date("Y-m-d H:i:s");
-				$expireDate = strtotime("+30 days");
-				$newSubscription->ExpireDate = date("Y-m-d H:i:s",$expireDate);
+				$newSubscription->StartDate = $startDate;
+				$newSubscription->ExpireDate = $expireDate;
 				$newSubscription->SubscriptionID = $subscriptionID;
 				$newSubscription->Status = 1;
 				$newSubscription->IsTrial = 0;
@@ -496,7 +546,7 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 				$memberCredits = new MemberCredits();
 				$memberCredits->Credits = $credits;
 				$memberCredits->Expire = 1;
-				$memberCredits->ExpireDate = date("Y-m-d H:i:s",$expireDate);
+				$memberCredits->ExpireDate = $expireDate;
 				$memberCredits->MemberID = $member->ID;
 				$memberCredits->ProductID = $newProductID;
 				$memberCredits->SubscriptionID = $newSubscription->ID;
@@ -511,11 +561,11 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 			}else{
 				//Set the subscription to Inactive 
 				$Pg_Ctrl->setSubscriptionStatus($subscriptionID, 'Inactive');
-				$form->sessionMessage("Sorry,the payment has failed due to some reason.please update your credit card", 'bad');
+				$form->sessionMessage("Sorry,the payment failed due to some reason.please update your credit card", 'bad');
 				return $this->edit(Controller::curr()->getRequest());
 			}
 		}else{
-			$form->sessionMessage("Sorry,the subscription has failed due to some reason.please try again", 'bad');
+			$form->sessionMessage("Sorry,the subscription failed due to some reason.please try again", 'bad');
 			return $this->edit(Controller::curr()->getRequest());
 		}
 		$form->sessionMessage("The Subscription is changed successfully.", 'good');
@@ -592,19 +642,18 @@ class AwFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest {
 			);
 			$app->dsUpdate("CreditCard", $ccID, $ccData);			
 		}
-		if(isset($data['Current'])){
-			// Update billing address on InfusionSoft
-			$conDat = array(
-				'Company' => $data['Company'],
-				'StreetAddress1' => $data['StreetAddress1'],
-				'StreetAddress2' => $data['StreetAddress2'],
-				'City' => $data['City'],
-				'State' => $data['State'],
-				'PostalCode' => $data['PostalCode'],
-				'Country' => $country
-			);
+		if(isset($data['Current']))
 			$Pg_Ctrl->unsetCurrentCreditCard($member->ID);
-		}
+		// Update billing address on InfusionSoft
+		$conDat = array(
+			'Company' => $data['Company'],
+			'StreetAddress1' => $data['StreetAddress1'],
+			'StreetAddress2' => $data['StreetAddress2'],
+			'City' => $data['City'],
+			'State' => $data['State'],
+			'PostalCode' => $data['PostalCode'],
+			'Country' => $country
+		);
 		$conID = $app->updateCon($isConID, $conDat);
 		//Add the credit card on site
 		$creditCard = new CreditCard();

@@ -47,7 +47,7 @@ class ManageHeatmaps_Controller extends Page_Controller {
 	//Get recent heatmap
 	public function recentHeatmap(){
 		$member = Member::currentUser();
-		$heatmap = Heatmaps::get()->filter(array('MemberID' => $member->ID))->sort('Created', 'DESC')->first();
+		$heatmap = Heatmaps::get()->filter(array('MemberID' => $member->ID,'Deleted' => 0))->sort('Created', 'DESC')->first();
 		if($heatmap){
 			$created = strtotime($heatmap->Created);
 			$diffHours = (time() - $created)/(60*60);

@@ -67,10 +67,34 @@ class Subscription extends DataObject {
 			return Member::get()->where("FirstName like '%$keyword%' OR Surname like '%$keyword%'")->map('ID', 'Name')->toArray();
 		};
 		$fields = parent::getCMSFields();
+		if($this->ID){
+			$fields->replaceField('SubscriptionID', new ReadonlyField('SubscriptionID'));
+			$fields->replaceField('StartDate', new ReadonlyField('StartDate'));
+			$fields->replaceField('ExpireDate', new ReadonlyField('ExpireDate'));
+			$fields->replaceField('Status', new ReadonlyField('Status'));
+			$fields->replaceField('IsTrial', new ReadonlyField('IsTrial'));
+			$fields->replaceField('SubscriptionCount', new ReadonlyField('SubscriptionCount'));
+			$fields->replaceField('MemberID', new ReadonlyField('MemberID'));
+			if(!$this->Status){
+				$fields->replaceField('ProductID', new ReadonlyField('ProductID'));
+				$fields->replaceField('ReasonCancelled', new ReadonlyField('ReasonCancelled'));
+			}
+			$fields->replaceField('OrderID', new ReadonlyField('OrderID'));
+		}
 		if($this->ID && $this->Status){
 			$products = $fields->dataFieldByName('ProductID');
 			$products->setDisabledItems(array(4,5,6,7,10));
 			$fields->replaceField('MemberID', new HiddenField('MemberID',$this->MemberID));
+			$reasons = array(
+					"I didn't use the product as much as I anticipated" => "I didn't use the product as much as I anticipated",
+					"The cost was too high" => "The cost was too high",
+					"I had technical problems generating heatmaps" => "I had technical problems generating heatmaps",
+					"I have changed jobs/careers" => "I have changed jobs/careers",
+					"I had problems with customer service" => "I had problems with customer service",
+					"I didn't find the heatmaps helpful" => "I didn't find the heatmaps helpful",
+					"Other (you may contact us support@attentionwizard.com with additional feedback)" => "Other (you may contact us support@attentionwizard.com with additional feedback)"
+			);
+			$fields->replaceField('ReasonCancelled', new CheckboxSetField('ReasonCancelled','Reason Cancelled',$reasons));
         }
 		if(!$this->ID){
 			$fields->addFieldToTab("Root.Main", new TextField('Keyword','Enter a keyword to search a member'),'MemberID');
@@ -128,8 +152,4 @@ class Subscription extends DataObject {
 		else
 			return new RequiredFields('MemberID', 'ProductID');
 	}
-    
-   
-    
-
 }

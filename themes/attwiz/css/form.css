@@ -7,6 +7,7 @@ ul.optionset {
 .holder-required {
     background-color:#ffb8b8;
 }
+
 .message.bad,.message.validation{ 
 	background-color:#FFDFDF;
 	color: 000;
@@ -44,6 +45,11 @@ ul.optionset {
     border-color:#9FDE9C;
 }
 
+input[type="Text"],input[type="Email"],input[type="Password"],textarea{
+	border: solid 1px #CCCCCC;
+}
+
+
 /* Registration form */
 
 .signup_box { 
@@ -67,10 +73,6 @@ ul.optionset {
     display: inline-block;
 }
 
-#Form_RegistrationForm input[type="Email"],input[type="Password"]{
-	border: solid 1px #CCCCCC;
-}
-
 #Form_RegistrationForm .Actions{
 	margin-left:200px;
 }
@@ -79,7 +81,164 @@ ul.optionset {
 	padding-bottom:10px;
 }
 
+/* Login form below header */
+
+#LoginFormBody #CustomLogin_LoginForm #Email label,
+#LoginFormBody #CustomLogin_LoginForm .password label
+{ 
+	width:110px;
+	display:inline-block;
+}
+
+#LoginFormBody #CustomLogin_LoginForm #Email .middleColumn, 
+#LoginFormBody #CustomLogin_LoginForm .password .middleColumn{
+    display: inline-block;
+}
+
+#LoginFormBody #CustomLogin_LoginForm .field { 
+	padding-bottom:10px;
+}
+
+#LoginFormBody #CustomLogin_LoginForm_error.bad, #ChangePasswordForm_ChangePasswordForm_error.bad,#CustomLogin_LostPasswordForm_error.bad { 
+	padding:10px;
+    margin: 10px 10px 0;
+    border: 1px solid #FFF;
+    color: #DA1D1D;
+    background: #FFDFDF;
+    border-color: #FFBBBB;
+    display:block !important;
+}
+
+/* Edit profile form */
+
+#Form_EditProfileForm{margin-top: 10px;}
+
+#Form_EditProfileForm label  
+{ 
+	width:140px;
+	display:inline-block;
+}
+
+#Form_EditProfileForm .middleColumn
+{
+    display: inline-block;
+}
+
+#Form_EditProfileForm input{
+	width: inherit;
+}
+
+#Form_EditProfileForm input[type="Image"]{
+	border: none;
+}
+
+#Form_EditProfileForm .Actions{
+	margin-left:215px;
+}
+
+#Form_EditProfileForm .field { 
+	padding-bottom:10px;
+}
+
+/* Contact Us form */
+
+#Form_ContactUsForm label  
+{ 
+	width:140px;
+	display:inline-block;
+}
+
+#Form_ContactUsForm #Message label  
+{ 
+	position: relative;
+    top: -70px;
+}
+
+#Form_ContactUsForm .middleColumn
+{
+    display: inline-block;
+}
+
+#Form_ContactUsForm input[type="Text"],#Form_ContactUsForm input[type="Email"],#Form_ContactUsForm textarea{
+	width: 240px;
+}
+
+#Form_ContactUsForm input[type="Image"]{
+	border: none;
+}
+
+#Form_ContactUsForm .Actions{
+	margin-left:375px;
+}
+
+#Form_ContactUsForm .field { 
+	padding-bottom:10px;
+}
+
+#Form_ContactUsForm #MyCaptcha { 
+	margin-left: 142px;
+}
+
+
+/* Lost Password form */
+
+#CustomLogin_LostPasswordForm label  
+{ 
+	width:140px;
+	display:inline-block;
+}
+
+
+#CustomLogin_LostPasswordForm .middleColumn
+{
+    display: inline-block;
+}
+
+#CustomLogin_LostPasswordForm input[type="text"]{
+	width: 240px;
+}
+
+#CustomLogin_LostPasswordForm input[type="Image"]{
+	border: none;
+}
+
+#CustomLogin_LostPasswordForm .Actions{
+	margin-left:288px;
+}
+
+/* Change Password form */
+
+#ChangePasswordForm_ChangePasswordForm label  
+{ 
+	width:140px;
+	display:inline-block;
+}
+
+
+#ChangePasswordForm_ChangePasswordForm .middleColumn
+{
+    display: inline-block;
+}
+
+#ChangePasswordForm_ChangePasswordForm input[type="Password"]{
+	width: 240px;
+}
+
+#ChangePasswordForm_ChangePasswordForm input[type="Image"]{
+	border: none;
+}
+
+#ChangePasswordForm_ChangePasswordForm .Actions{
+	margin-left:288px;
+}
+
+#ChangePasswordForm_ChangePasswordForm .field { 
+	padding-bottom:10px;
+}
+
+
 /* Trial Sign-up form */
+
 
 #Form_TrialSignupForm label 
 { 

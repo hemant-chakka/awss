@@ -150,7 +150,7 @@ class NonExpiringHeatmaps_Controller extends Page_Controller
 				'UserID'  => 1
 			);
 			$conActionID = $app->dsAdd("ContactAction", $conActionDat);
-			$this->setMessage('Error', 'Sorry,the payment has failed,please update your credit card.');
+			$this->setMessage('Error', 'Sorry,the payment failed,please update your credit card.');
 			return $this->redirect('/account-settings/#tabs-2');
 		}
 		return $this->redirect('/account-settings');

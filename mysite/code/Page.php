@@ -99,7 +99,7 @@ class Page_Controller extends ContentController {
 		'moveCreditsFromJoomlaToSS',
 		'moveHistoryFromJoomlaToSS',
 		'markHeatmapStatusJoomla',
-		'testCC'
+		'updateSubscriptionsRoutine'
 	);
 	
 	private static $url_handlers = array(
@@ -121,6 +121,9 @@ class Page_Controller extends ContentController {
 		Requirements::css('assets/fancybox/jquery.fancybox.css');
 		Requirements::javascript('assets/fancybox/jquery.fancybox.js');
 		Requirements::javascript('mysite/js/common.js');
+		Requirements::javascript(FRAMEWORK_DIR . '/thirdparty/jquery-validate/jquery.validate.min.js');
+		Requirements::javascript('mysite/js/login.js');
+		Requirements::javascript('mysite/js/change-password.js');
 	}
 	// Get InfusionSoft API object
 	public function getInfusionSoftApi(){
@@ -465,7 +468,7 @@ class Page_Controller extends ContentController {
 		//Get the user details
 		$isContactId = intval($_REQUEST['Id']);
 		$emailAddress = $_REQUEST['Email'];
-		if($email != 'hemant.chakka@yahoo.com' && $email != 'stacey@sitetuners.com')
+		if($emailAddress != 'hemant.chakka@yahoo.com' && $emailAddress != 'stacey@sitetuners.com')
 			return false;
 		$productId = intval($this->request->param('ID'));
 		$member = Member::get()->filter(array(
@@ -524,11 +527,10 @@ class Page_Controller extends ContentController {
 			//Set the subscription inactive on site
 			$subscription->Status = 0;
 			$subscription->write();
-			//Send a notification email to Casey
+			//Send a notification email to Support
 			$email = new Email();
 			$email->setSubject("AW Notification - auto payment failed");
         	$email->setFrom('support@attentionwizard.com');
-			//$email->setTo('casey@sitetuners.com');
 			$email->setTo('hemant.chakka@gmail.com');
 			$email->setTemplate('PaymentFailedEmail');
 			$email->populateTemplate(array(
@@ -537,6 +539,162 @@ class Page_Controller extends ContentController {
 			));
 			$email->send();
 		}
+	}
+	// Update Subscriptions status routine, runs every day using cron 
+	public function updateSubscriptionsRoutine(){
+		//Get InfusionSoft Api
+		$app = $this->getInfusionSoftApi();
+		$date = date('Y-m-d',strtotime("-1 days"));
+		$subscriptions = Subscription::get()->filter(array(
+				'Status' => 1,
+				'ExpireDate:LessThan' => $date
+		));
+		if($subscriptions){
+			foreach ($subscriptions as $subscription){
+				//Get user details
+				$subscriptionId = $subscription->SubscriptionID;
+				$isContactId = $subscription->Member()->ISContactID;
+				$isProductId = $subscription->Product()->ISProductID;
+				$emailAddress = $subscription->Member()->Email;
+				$productId = $subscription->ProductID;
+				$member = $subscription->Member();
+				$subscriptionPayStatus = $this->getSubscriptionPayStatus($subscriptionId, $isContactId, $isProductId);
+				if($subscriptionPayStatus){
+					//Update the subscription
+					$nextBillDate = $this->getSubscriptionNextBillDate($subscription->SubscriptionID);
+					$renewalExpireDate= date('Y-m-d H:i:s', strtotime($nextBillDate));
+					$renewalStartDate= date('Y-m-d H:i:s', strtotime($renewalExpireDate. "-30 days"));
+					$subscription->StartDate = $renewalStartDate;
+					$subscription->ExpireDate = $renewalExpireDate;
+					$subscription->IsTrial = 0;
+					$subscription->SubscriptionCount += 1;
+					$subscription->write();
+					//Get current credit card
+					$creditCard = $this->getCurrentCreditCard($member->ID);
+					//Create billing history record
+					$billingHistory = new MemberBillingHistory();
+					$billingHistory->MemberID = $member->ID;
+					$billingHistory->CreditCardID = $creditCard->ID;
+					$billingHistory->ProductID = $productId;
+					$billingHistory->SubscriptionID = $subscription->ID;
+					$billingHistory->write();
+					//Update member credits
+					$memberCredits = MemberCredits::get()->filter(array(
+							'MemberID' => $member->ID,
+							'SubscriptionID' => $subscription->ID
+					))->first();
+					$memberCredits->Credits = $subscription->Product()->Credits;
+					$memberCredits->ExpireDate = $renewalExpireDate;
+					$memberCredits->write();
+					//Update Infusionsoft contact
+					$isTagId = $this->getISTagIdByProduct($productId);
+					$app->grpRemove($isContactId, $isTagId);
+					$app->grpAssign($isContactId, $isTagId);
+					// Update subscription contacts
+					$app->grpRemove($isContactId, 2216);
+					$returnFields = array('_AWofmonths');
+					$conDat = $app->loadCon($isContactId,$returnFields);
+					$conDat = array(
+							'_AWofmonths' => $conDat['_AWofmonths']+1,
+							'_AttentionWizard' => 'Paid and Current',
+							'ContactType' => 'AW Customer',
+							'_AWcanceldate' => null
+					);
+					$app->updateCon($isContactId, $conDat);
+					// Remove previous cancel tags
+					$app->grpRemove($isContactId, 2226);
+					$app->grpRemove($isContactId, 2758);
+					$app->grpRemove($isContactId, 2682);
+					$app->grpRemove($isContactId, 2680);
+					$app->grpRemove($isContactId, 2694);
+					$app->grpRemove($isContactId, 3019);
+				}else{
+					//Set the subscription to inactive
+					$result = $this->setSubscriptionStatus($subscription->SubscriptionID, 'Inactive');
+					if(is_int($result)){
+						//Update Infusionsoft contact
+						//get the current date
+						$curdate = $app->infuDate(date('j-n-Y'));
+						// Custom fields populated
+						$conDat = array(
+							'_AttentionWizard' => 'Cancelled due to card decline',
+							'_AWcanceldate' => $curdate
+						);
+						$app->updateCon($isContactId, $conDat);
+						// Remove tag trial member
+						$app->grpRemove($isContactId, 2216);
+						if($this->isTrialMember($member->ID)){
+							// Add Cancel after trial tag
+							$app->grpAssign($isContactId, 2226);
+							// Add CXL Card declined tag
+							$app->grpAssign($isContactId, 2682);
+						}else{
+							// Add CXL Card declined tag
+							$app->grpAssign($isContactId, 2682);
+						}
+						// Note is added
+						if($this->isTrialMember($member->ID)){
+							$conActionDat = array('ContactId' => $isContactId,
+								'ActionType'  => 'UPDATE',
+								'ActionDescription'  => "Cancelled AW Trial",
+								'CreationDate'  => $curdate,
+								'CreationNotes'     => "Credit card charge failed",
+								'ActionDate'  => $curdate,
+								'CompletionDate'  => $curdate,
+								'UserID'  => 1
+							);
+						}else{
+							$conActionDat = array('ContactId' => $isContactId,
+								'ActionType'  => 'UPDATE',
+								'ActionDescription'  => "Payment declined by Auth.net - account cancelled",
+								'CreationDate'  => $curdate,
+								'CreationNotes'     => "Credit card charge failed",
+								'ActionDate'  => $curdate,
+								'CompletionDate'  => $curdate,
+								'UserID'  => 1
+							);
+						}
+						$conActionID = $app->dsAdd("ContactAction", $conActionDat);
+						//Set the subscription inactive on site
+						$subscription->Status = 0;
+						$subscription->write();
+						//Send a notification email to support
+						$email = new Email();
+						$email->setSubject("AW Notification - auto payment failed");
+						$email->setFrom('support@attentionwizard.com');
+						$email->setTo('hemant.chakka@gmail.com');
+						$email->setTemplate('PaymentFailedEmail');
+						$email->populateTemplate(array(
+							'emailAddress' => $emailAddress,
+							'subscriptionId' => $subscription->SubscriptionID
+						));
+						$email->send();
+					}
+				}
+			}
+		}
+	}
+	// Get the current subscription pay status
+	function getSubscriptionPayStatus($subscriptionId,$isContactId,$isProductId){
+		//Get InfusionSoft Api
+		$app = $this->getInfusionSoftApi();
+		$returnFields = array('LastBillDate');
+		$query = array('Id'=>$subscriptionId);
+		$result = $app->dsQuery("RecurringOrderWithContact",10,0,$query,$returnFields);
+		if($result[0]['LastBillDate']){
+			$dateCreated = $result[0]['LastBillDate'];
+			$dateCreated = explode('T', $dateCreated);
+			$dateCreated = strtotime($dateCreated[0]);
+			$dateCreated = date('Y-m-d',$dateCreated);
+			$returnFields1 = array('PayStatus');
+			$query = array('ContactId' => $isContactId,'DateCreated' => "$dateCreated%",'ProductSold' => "$isProductId");
+			$result1 = $app->dsQuery("Invoice",10,0,$query,$returnFields1);
+			if(empty($result1) || !$result1[0]['PayStatus'])
+				return false;
+				if($result1[0]['PayStatus'])
+					return true;
+		}
+		return true;
 	}
 	// Get the InfusionSoft subscription Next BillDate
 	public function getSubscriptionNextBillDate($subscriptionId){
@@ -556,16 +714,6 @@ class Page_Controller extends ContentController {
 	//Move members from Joomla to Silverstripe
 	public function moveMembersFromJoomlaToSS(){
 		die('test1');
-		/*
-		//Test create a member
-		$member = new Member();
-		$member->FirstName = 'hemant2';
-		$member->Surname = 'kumar2';
-		$member->Email = 'hemant.test@test.com';
-		$member->FirstName = 'hemant2';
-		$member->Password = 'test';
-		$member->write();
-		*/
 		error_reporting(E_ALL);
 		ini_set('display_errors', 1);
 		ini_set('max_execution_time', 0);
@@ -601,22 +749,19 @@ class Page_Controller extends ContentController {
 			$member->write();
 			$userGroup->Members()->add($member); 
 			//Send an email to the user with new password
+			/*
 			if($obj->email == 'hemant.chakka@yahoo.com'){
-				
-				
 				$email = new Email();
 				$email->setSubject("AttentionWizard Update: Your password changed");
     	    	$email->setFrom('support@attentionwizard.com');
 				$email->setTo($obj->email);
-				
-				
 				$email->setTemplate('NewPasswordEmail');
 				$email->populateTemplate(array(
 				    'fullName' => $obj->name,
 				 	'password' => $password
 				));
 				$email->send();
-			}
+			} */
 			$membersCreated++;
 		}
 		$mysqli->close();
@@ -656,7 +801,7 @@ class Page_Controller extends ContentController {
 	}
 	//Mark heatmap status on Joomla
 	public function markHeatmapStatusJoomla(){
-		die('test2');
+		//die('test2');
 		error_reporting(E_ALL);
 		ini_set('display_errors', 1);
 		ini_set('max_execution_time', 0);
@@ -827,26 +972,6 @@ class Page_Controller extends ContentController {
 		$mysqli->close();
 		echo "Total Cards moved: $totalRec";
 	}
-	public function testCC(){
-		$creditCardsList = '';
-		$creditCards = CreditCard::get();
-		foreach ($creditCards as $creditCard){
-			if($creditCardsList == '')
-				$creditCardsList = $creditCard->CreditCardNumber;
-			else 
-				$creditCardsList.= ",".$creditCard->CreditCardNumber;
-		}
-		$mysqli = $this->getDbConnection();
-		$result = $mysqli->query("SELECT *, u.id uid FROM jos_users u
-		INNER JOIN jos_aw_creditcard c ON u.id = c.creditcard_userid
-		where c.creditcard_number NOT IN ($creditCardsList)");
-		while ($obj = $result->fetch_object()) {
-			echo $obj->email;
-			echo "<br />";
-			
-		}
-		$mysqli->close();
-	}
 	//Find if the credit card is current
 	public function joomlaCurrentCreditCard($creditCard,$memberId){
 		$mysqli = $this->getDbConnection();
@@ -925,7 +1050,7 @@ class Page_Controller extends ContentController {
 	}
 	//Move subscriptions from Joomla to Silverstripe
 	public function moveSubscriptionsFromJoomlaToSS(){
-		//die('test2');
+		die('test2');
 		error_reporting(E_ALL);
 		ini_set('display_errors', 1);
 		ini_set('max_execution_time', 0);

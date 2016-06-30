@@ -9,3 +9,9 @@ After:
 # Caution: Indentation through two spaces, not tabs
 SSViewer:
   theme: 'simple'
+
+Page_Controller:
+  allowed_ips:
+    - '127.0.0.1'
+    - '::1'
+    

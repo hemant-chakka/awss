@@ -9,6 +9,11 @@ class EditProfilePage_Controller extends Page_Controller
 	private static $allowed_actions = array(
 		'EditProfileForm'
 	);
+	
+	function init(){
+		parent::init();
+		Requirements::javascript('mysite/js/edit-profile.js');
+	}
 
 	function EditProfileForm()
 	{
@@ -16,7 +21,7 @@ class EditProfilePage_Controller extends Page_Controller
 	    $fields = new FieldList(
 			new TextField('FirstName', 'First Name'),
 	    	new TextField('Surname', 'Last Name'),
-			new EmailField('Email', 'Email'),
+			new TextField('Email', 'Email'),
 			new ConfirmedPasswordField('Password', 'New Password')
 		);
 	 	
@@ -27,7 +32,8 @@ class EditProfilePage_Controller extends Page_Controller
 		$saveProfileAction->setAttribute('src', 'themes/attwiz/images/button_submit.gif');
 		// Create action
 		$validator = new RequiredFields('FirstName','Surname','Email');
-	   
+		$validator = null;
+		
 	    //Create form
 		$Form = new Form($this, 'EditProfileForm', $fields, $actions, $validator);
 
@@ -74,7 +80,7 @@ class EditProfilePage_Controller extends Page_Controller
 				//Update the member on site
 				$form->saveInto($CurrentMember);	
 				$CurrentMember->write();
-				$form->sessionMessage('Your profile has been saved!', 'success');
+				$this->setMessage('Success', 'Your profile has been saved!');
         		return $this->redirectBack();
 			}
 		}

@@ -21,6 +21,8 @@ class CreateHeatmap_Controller extends Page_Controller {
 
 	function init(){
 		parent::init();
+		Requirements::themedCSS('jquery-filestyle.min');
+		Requirements::javascript('mysite/js/jquery-filestyle.min.js');
 		Requirements::javascript('mysite/js/create-heatmap.js');
 		SSViewer::setOption('rewriteHashlinks', false);
 	}
@@ -33,12 +35,14 @@ class CreateHeatmap_Controller extends Page_Controller {
 		);
 		$fields = new FieldList(
 				$imageField = new FileField('OriginalImage','Upload an Image File'),
-				new LiteralField('Underline','<hr>'),
 				new LiteralField('UploadInfo','Acceptable images are jpg or png, 500-1600 pixels wide by 500-1200 pixels height.<hr>'),
 				new OptionsetField('IncludeWatermark','Include Watermark?',$includeWatermark,1)
 				
 		);
 		$imageField->getValidator()->setAllowedExtensions(array('jpg','jpeg','png'));
+		$imageField->setAttribute('class', 'jfilestyle');
+		$imageField->setAttribute('data-buttonText', "<img src='themes/attwiz/images/button-create-heatmap-browse.jpg'></img>");
+		$imageField->setAttribute('data-placeholder', 'No file selected..');
 		// Create action
 		$actions = new FieldList(
 				$submit = new FormAction('processCreateHeatmap','')
@@ -264,7 +268,7 @@ class CreateHeatmap_Controller extends Page_Controller {
 			));
 			$email->send();
 			//Redirect to manage heatmaps page
-			$this->setMessage('Success', 'Heatmap is successfully created');
+			$this->setMessage('Success', 'Heatmap is created successfully');
 			return "url1";
 		}else{
 			$email = new Email();

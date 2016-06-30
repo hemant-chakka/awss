@@ -71,25 +71,42 @@ class RegistrationPage_Controller extends Page_Controller
 		}
 		return 0;
 	}
+	//Validate Email 
+	public function ValidateEmail($email){
+		if (filter_var($email, FILTER_VALIDATE_EMAIL) === false)
+			return false;
+		return true;
+	}
+	//Check duplicate Email
+	public function EmailExists2($email){
+		$member = Member::get()->filter(array('Email' => $email));
+		if($member->count() > 0)
+			return true;
+		return false;
+	}
 	//Validate sign-up form
 	public function validateSignup(){
 		$data = $_POST;
 		$messages = array();
 		if($data['Email'] == '')
-			$messages[] = "* Email address is required";
-		
+			$messages[] = "* Email address is required.";
+		if(!$this->ValidateEmail($data['Email']))
+			$messages[] = "* Please enter a valid email address.";
+		if($this->EmailExists2($data['Email'])){
+			$email = $data['Email'];
+			$messages[] = "* There is already an AttentionWizard account associated with
+			the email address <b>$email</b>.
+			Please use the Customer Login to access your account,
+			or enter another email address.";
+		}
 		if($data['Password']['_Password'] == '' && $data['Password']['_ConfirmPassword'] == '')
 			$messages[] = "* Password is required";
-			
-		if($data['Password']['_Password'] !=  $data['Password']['_ConfirmPassword'])
-			$messages[] = "* Password and Confirm Password fields do not match, please re-enter them";
-		
 		if(strlen($data['Password']['_Password']) < 6)
-			$messages[] = "* Your password must be at least 6 characters long, please enter a longer password.";
-		
+			$messages[] = "* Your password must be at least 6 characters long, <b>please enter a longer password</b>.";
+		if($data['Password']['_Password'] !=  $data['Password']['_ConfirmPassword'])
+			$messages[] = "* Password and Confirm Password fields do not match, <b>please re-enter them</b>.";
 		if(!isset($data['Terms']))
 			$messages[] = "* Please Accept the AttentionWizard Terms of Use";
-			
 	    $str = '';
 	    foreach ($messages as $message){
 	    	if($str == '')
@@ -97,7 +114,6 @@ class RegistrationPage_Controller extends Page_Controller
 	    	else 
 	    		$str .= "$message </br>";
 	    }
-		
 	    return $str;
 	}
 }

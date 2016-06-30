@@ -18,11 +18,13 @@ class AccountSettings_Controller extends Page_Controller {
 		// Note: you should use SS template require tags inside your templates
 		// instead of putting Requirements calls here.  However these are
 		// included so that our older themes still work
+		Requirements::javascript('mysite/js/update-billing-address.js');
 		Requirements::themedCSS('jquery-ui');
 		Requirements::javascript('framework/thirdparty/jquery-ui/jquery-ui.js');
-		Requirements::javascript('mysite/js/jquery-1.9.1.js');
-		Requirements::javascript('mysite/js/jquery-ui.js');
+		//Requirements::javascript('mysite/js/jquery-1.9.1.js');
+		//Requirements::javascript('mysite/js/jquery-ui.js');
 		Requirements::javascript('mysite/js/account-settings.js');
+		
 	}
 	
 	public function isMainBodyFull(){
@@ -90,11 +92,11 @@ class AccountSettings_Controller extends Page_Controller {
 		//Get new product
 		$product = Product::get()->byID($newProductID);
 		$credits = $product->Credits;
-		$isProductID = $product->ISProductID;
+		$isProductID = $product->ISInitialProductID;
 		// Get the current InfusionSoft credit card ID
 		$creditCard = $this->getCurrentCreditCard($member->ID);
 		$ccID = $creditCard->ISCCID;
-		$subscriptionID = $this->createISSubscription($isConID,$isProductID, $product->RecurringPrice, $ccID, 30);
+		$subscriptionID = $this->createISSubscription($isConID,$product->ISProductID, $product->RecurringPrice, $ccID, 30);
 		if($subscriptionID && is_int($subscriptionID)){
 			// Create an order
 			$order = new Order();
@@ -145,10 +147,12 @@ class AccountSettings_Controller extends Page_Controller {
 				);
 				$app->updateCon($isConID, $conDat);
 				//Create a new Subscription
+				$nextBillDate = $this->getSubscriptionNextBillDate($subscriptionID);
+				$expireDate= date('Y-m-d H:i:s', strtotime($nextBillDate));
+				$startDate= date('Y-m-d H:i:s', strtotime($expireDate. "-30 days"));
 				$newSubscription = new Subscription();
-				$newSubscription->StartDate = date("Y-m-d H:i:s");
-				$expireDate = strtotime("+30 days");
-				$newSubscription->ExpireDate = date("Y-m-d H:i:s",$expireDate);
+				$newSubscription->StartDate = $startDate;
+				$newSubscription->ExpireDate = $expireDate;
 				$newSubscription->SubscriptionID = $subscriptionID;
 				$newSubscription->Status = 1;
 				$newSubscription->IsTrial = 0;
@@ -160,7 +164,7 @@ class AccountSettings_Controller extends Page_Controller {
 				// Create a MemberCredits record
 				$memberCredits = new MemberCredits();
 				$memberCredits->Credits = $credits;
-				$memberCredits->ExpireDate = date("Y-m-d H:i:s",$expireDate);
+				$memberCredits->ExpireDate = $expireDate;
 				$memberCredits->MemberID = $member->ID;
 				$memberCredits->ProductID = $newProductID;
 				$memberCredits->SubscriptionID = $newSubscription->ID;
@@ -187,14 +191,14 @@ class AccountSettings_Controller extends Page_Controller {
 			}else{
 				//Set the subscription to Inactive 
 				$this->setSubscriptionStatus($subscriptionID, 'Inactive');
-				$this->setMessage('Error', 'Sorry,the payment has failed due to some reason.please update your credit card');
+				$this->setMessage('Error', 'Sorry,the payment failed due to some reason.please update your credit card.');
 				return $this->redirect('/account-settings/#tabs-2');
 			}
 		}else{
-			$this->setMessage('Error', 'Sorry,the subscription has failed due to some reason.please try again');
+			$this->setMessage('Error', 'Sorry,the subscription not created due to some reason.please try again.');
 			return $this->redirect('/account-settings/#tabs-4');
 		}
-		$this->setMessage('Success', 'The Subscription is changed successfully');
+		$this->setMessage('Success', 'The Subscription is changed successfully.');
 		return $this->redirect('/account-settings');
 	}
 	// Create a new subscription
@@ -223,7 +227,7 @@ class AccountSettings_Controller extends Page_Controller {
 			}else{
 				$productName = $product->Name;
 				$orderAmount = $product->RecurringPrice;
-				$isProductID = $product->ISProductID;
+				$isProductID = $product->ISInitialProductID;
 				$trial = 0;
 				$subscriptionCount = 1;
 			}
@@ -248,11 +252,13 @@ class AccountSettings_Controller extends Page_Controller {
 				$order->IsTrial = $trial;
 				$order->write();
 				// Create a Subscription record
+				$nextBillDate = $this->getSubscriptionNextBillDate($subscriptionID);
+				$expireDate= date('Y-m-d H:i:s', strtotime($nextBillDate));
+				$startDate= date('Y-m-d H:i:s', strtotime($expireDate. "-30 days"));
 				$subscription = new Subscription();
 				$subscription->SubscriptionID = $subscriptionID;
-				$subscription->StartDate = date("Y-m-d H:i:s");
-				$expireDate = strtotime("+30 days");
-				$subscription->ExpireDate = date("Y-m-d H:i:s",$expireDate);
+				$subscription->StartDate = $startDate;
+				$subscription->ExpireDate = $expireDate;
 				$subscription->Status = 1;
 				$subscription->IsTrial = $trial;
 				$subscription->SubscriptionCount = $subscriptionCount;
@@ -263,7 +269,7 @@ class AccountSettings_Controller extends Page_Controller {
 				// Create a MemberCredits record
 				$memberCredits = new MemberCredits();
 				$memberCredits->Credits = $credits;
-				$memberCredits->ExpireDate = date("Y-m-d H:i:s",$expireDate);
+				$memberCredits->ExpireDate = $expireDate;
 				$memberCredits->MemberID = $member->ID;
 				$memberCredits->ProductID = $productID;
 				$memberCredits->SubscriptionID = $subscription->ID;
@@ -353,7 +359,7 @@ class AccountSettings_Controller extends Page_Controller {
 					'UserID'  => 1
 				);
 				$conActionID = $app->dsAdd("ContactAction", $conActionDat);
-				$this->setMessage('Error', 'Sorry,the payment has failed due to some reason.please update your credit card');
+				$this->setMessage('Error', 'Sorry,the payment failed due to some reason.please update your credit card.');
 				return $this->redirect('/account-settings/#tabs-2');
 			}
 		}else{
@@ -379,10 +385,10 @@ class AccountSettings_Controller extends Page_Controller {
 				'UserID'  => 1
 			);
 			$conActionID = $app->dsAdd("ContactAction", $conActionDat);
-			$this->setMessage('Error', 'Sorry,the subscription has failed due to some reason.please try again');
+			$this->setMessage('Error', 'Sorry,the subscription not created due to some reason.please try again.');
 			return $this->redirect('/account-settings/#tabs-4');
 		}
-		$this->setMessage('Success', 'The Subscription is created successfully');
+		$this->setMessage('Success', 'The Subscription is created successfully.');
 		return $this->redirect('/account-settings');
 	}
 	// Get the tab number
@@ -453,6 +459,7 @@ class UpdateBillingAddressForm extends Form {
 		$submit->setAttribute('src', 'themes/attwiz/images/button_update_billing.png');
 		// Create action
 		$validator = new RequiredFields('CreditCardType','NameOnCard','CreditCardNumber','CVVCode','ExpirationMonth','ExpirationYear','FirstName','LastName','StreetAddress1','City','State','PostalCode','Country');
+		$validator = null;
         parent::__construct($controller, $name, $fields, $actions,$validator);
     }
 	// Update Billing Address Form Action
@@ -489,7 +496,8 @@ class UpdateBillingAddressForm extends Form {
 		if($data['CreditCardNumber'] == $data['CreditCardNumberCopy']){
 			//Get the credit card
 			$creditCard = $creditCard = CreditCard::get()->filter(array(
-   				'CreditCardNumber' => $data['CreditCardNumberCur']
+   				'CreditCardNumber' => $data['CreditCardNumberCur'],
+				'MemberID'=> $member->ID
 			))->First();
 			//Update the credit card on InfusionSoft
 			$ccData = array(
@@ -526,7 +534,8 @@ class UpdateBillingAddressForm extends Form {
 		}else{
 			//Find if the credit card exist
 			$creditCard = CreditCard::get()->filter(array(
-   				'CreditCardNumber' => $data['CreditCardNumber']
+   				'CreditCardNumber' => $data['CreditCardNumber'],
+				'MemberID'=> $member->ID
 			))->First();
 			if($creditCard){
 				//Get current credit card, un-mark it as current

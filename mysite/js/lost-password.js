@@ -15,5 +15,33 @@
 		button4 = button4 + '<p id="ForgotPassword"><a href="Security/lostpassword">I\'ve lost my password</a></p>';
 		if(currentMemberID == 0)
 			$("#LoginFormBody .Actions").html(button4);
+		
+		$("#CustomLogin_LostPasswordForm_Email").prop("type", "text");
+		
+		$("#CustomLogin_LostPasswordForm").submit(function(event){
+			event.preventDefault();
+		});
+		
+		$("#CustomLogin_LostPasswordForm").validate({
+			onfocusout: function(element) {
+		         this.element(element);
+		    },
+			rules: {
+				Email: {
+				      required: true,
+				      email:true
+				}
+			},
+		    messages: {
+		    	Email: {
+		    		required: "Required",
+		    		email: "Invalid Email"
+		    	}
+		    },
+		    submitHandler: function(form) {
+		    	$("#CustomLogin_LostPasswordForm").unbind('submit');
+		    	$("#CustomLogin_LostPasswordForm").submit();
+		    }
+		});
 	});
 })(jQuery)      

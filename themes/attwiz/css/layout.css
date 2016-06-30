@@ -2495,6 +2495,21 @@ width:500px;
 	-moz-border-radius:10px; 
 }
 
+#CreateHeatmapForm{
+	margin:auto;
+	padding:20px 20px 50px 20px;
+	background-color:#e6eff6;
+	border:1px solid #afc0d8;
+	border-radius:10px;
+	-moz-border-radius:10px; 
+}
+
+#CreateHeatmapForm .Actions{
+	float: right;
+}
+
+
+
 #Form_ContactUsForm{ padding:20px; }
 /***********************************************************************************************************
 MANAGE HEATMAPS PAGE
@@ -2601,7 +2616,7 @@ input[type="text"],input[type="Email"],input[type="Password"] {
 }
 #Form_TrialSignupForm,#Form_MemberTrialSignupForm{padding-bottom:30px;}
 #Form_TrialSignupForm .Actions,#Form_MemberTrialSignupForm .Actions{ float: right;}
-#Form_PrepaidSignupForm .Actions,#Form_NonExpiringHeatmapsForm .Actions,#Form_MemberNonExpiringHeatmapsForm .Actions{ margin-left: 320px;}
+#Form_PrepaidSignupForm .Actions,#Form_NonExpiringHeatmapsForm .Actions,#Form_MemberNonExpiringHeatmapsForm .Actions{ margin-left: 350px;}
 
 #ShoppingCart{
 	margin-left: 0px;
@@ -2708,7 +2723,7 @@ p#ErrorMessage {
 }
 
 #download-recent-heatmap{
-	width:80%;
+	width:90%;
 	padding: 20px 50px;
 	background-color: #e6eff6;
 	border: 1px solid #afc0d8;
@@ -2746,4 +2761,40 @@ p#ErrorMessage {
     font-weight: bold;
     margin: 0px;
     padding: 0px;
+}
+
+/* Create Heatmap */
+
+#Form_CreateHeatmapForm .jfilestyle input{ 
+    border: 1px solid #c0c0c0;
+	border-radius: 4px;
+}
+
+#Form_CreateHeatmapForm .focus-jfilestyle label{ 
+	background-color: transparent;
+    border: none;
+}
+
+/* Site upgrade message */
+
+#site_upgrade_message_wrap{
+	margin: auto;
+    width: 978px;
+    text-align: center;
+    background-image: url("../images/bkgd_branding3.PNG");
+    background-repeat: repeat-y;
+    height: 118px;
+}
+
+#site_upgrade_message_inner{
+	width: 900px;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    background-color: rgba(250, 255, 189, 0.78);
+    margin: auto;
+    display: inline-block;
+    padding: 10px;
+    text-align: left;
+    position: relative;
+    top: -30px;
 }

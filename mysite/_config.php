@@ -39,6 +39,6 @@ Director::addRules(100, array(
 ));
 
 // Set the default timezone
-date_default_timezone_set('America/Los_Angeles');
+date_default_timezone_set('America/New_York');
 
 Object::add_extension('SiteConfig', 'CustomSiteConfig');

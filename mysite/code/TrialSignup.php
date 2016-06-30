@@ -15,7 +15,6 @@ class TrialSignup_Controller extends Page_Controller
 	
 	function init(){
 		parent::init();
-		Requirements::javascript(FRAMEWORK_DIR . '/thirdparty/jquery-validate/jquery.validate.min.js');
 		Requirements::javascript('mysite/js/trial-signup.js');
 		SSViewer::setOption('rewriteHashlinks', false);
 	}
@@ -479,7 +478,7 @@ class TrialSignup_Controller extends Page_Controller
 		}else{
 			$productName = $product->Name;
 			$orderAmount = $product->RecurringPrice;
-			$isProductID = $product->ISProductID;
+			$isProductID = $product->ISInitialProductID;
 		}
 		// Store credit card info
 		$creditCard = new CreditCard();
@@ -518,10 +517,12 @@ class TrialSignup_Controller extends Page_Controller
 			$result = $app->chargeInvoice($invoiceId,$productName,$ccID,$config->MerchantAccount,false);
 			if($result['Successful']){
 				// Create a Subscription record
+				$nextBillDate = $this->getSubscriptionNextBillDate($subscriptionID);
+				$expireDate= date('Y-m-d H:i:s', strtotime($nextBillDate));
+				$startDate= date('Y-m-d H:i:s', strtotime($expireDate. "-30 days"));
 				$subscription = new Subscription();
-				$subscription->StartDate = date("Y-m-d H:i:s");
-				$expireDate = strtotime("+30 days");
-				$subscription->ExpireDate = date("Y-m-d H:i:s",$expireDate);
+				$subscription->StartDate = $startDate;
+				$subscription->ExpireDate = $expireDate;
 				$subscription->MemberID = $memberID;
 				$subscription->ProductID = $data['SubscriptionType'];
 				$subscription->OrderID = $orderID;
@@ -531,7 +532,7 @@ class TrialSignup_Controller extends Page_Controller
 				// Create a MemberCredits record
 				$memberCredits = new MemberCredits();
 				$memberCredits->Credits = $credits;
-				$memberCredits->ExpireDate = date("Y-m-d H:i:s",$expireDate);
+				$memberCredits->ExpireDate = $expireDate;
 				$memberCredits->MemberID = $memberID;
 				$memberCredits->ProductID = $data['SubscriptionType'];
 				$memberCredits->SubscriptionID = $subscription->ID;
@@ -573,6 +574,8 @@ class TrialSignup_Controller extends Page_Controller
 					//Update the InfusionSoft contact details
 					$returnFields = array('_AWofmonths');
 					$conDat1 = $app->loadCon($isConID,$returnFields);
+					if(!isset($conDat1['_AWofmonths']))
+						$conDat1['_AWofmonths'] = 0;
 					$conDat = array(
 							'_AWofmonths' => $conDat1['_AWofmonths']+1,
 							'ContactType' => 'AW Customer',
@@ -593,7 +596,7 @@ class TrialSignup_Controller extends Page_Controller
 					$app->dsAdd("ContactAction", $conActionDat);
 				}
 				$member->logIn();
-				$this->setMessage('Success', 'The Subscription is created successfully');
+				$this->setMessage('Success', 'You have signed-up & the Subscription is created successfully');
 				return 'url1';
 			}else{
 				//Set the subscription to Inactive
@@ -624,7 +627,7 @@ class TrialSignup_Controller extends Page_Controller
 				);
 				$conActionID = $app->dsAdd("ContactAction", $conActionDat);
 				$member->logIn();
-				$this->setMessage('Error', 'Sorry,the payment has failed due to some reason.please update your credit card');
+				$this->setMessage('Error', 'Sorry,the payment failed due to some reason.please update your credit card');
 				return "url2";
 			}
 		}else{
@@ -652,7 +655,7 @@ class TrialSignup_Controller extends Page_Controller
 					'UserID'  => 1
 			);
 			$conActionID = $app->dsAdd("ContactAction", $conActionDat);
-			$this->setMessage('Error', 'Sorry,the subscription has failed due to some reason.please try again');
+			$this->setMessage('Error', 'You have signed-up successfully but the Subscription is not created,please try again.');
 			return "url3";
 		}
 	}

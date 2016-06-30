@@ -8,7 +8,8 @@ class Product extends DataObject {
     	'TrialPrice' => 'Currency',
     	'RecurringPrice' => 'Currency',
     	'Credits' => 'Int',
-    	'ISProductID' => 'Int'
+    	'ISProductID' => 'Int',
+    	'ISInitialProductID' => 'Int'
     );
     
     private static $summary_fields = array(
@@ -17,6 +18,18 @@ class Product extends DataObject {
     static $searchable_fields = array(
     		'Name'
     );
+    /*
+	public function canDelete($member = null) {
+
+		return false;
+		
+	}
+	
+	public function canCreate($member = null) {
+	
+		return false;
+	
+	}  */
     
     // Create Defaults
     public function requireDefaultRecords() {

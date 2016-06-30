@@ -58,12 +58,12 @@
 </tr>
 <tr style="text-align: left;">
 <td style="text-align: left;">Non-expiring heatmaps:</td>
-<td style="text-align: left;">
+<td style="text-align: left;padding:3px;">
 <table border="0" align="left">
 <tbody>
 <tr>
-<td>$getNonExpiringHeatmapsRemaining($CurrentMember.ID)</td>
-<td>
+<td style="padding:0px;">$getNonExpiringHeatmapsRemaining($CurrentMember.ID)</td>
+<td style="padding:0px;">
 	<% if isSubscriber($CurrentMember.ID) %>
 		<a href="/purchase-member-non-expiring-heatmaps">purchase</a>
 	<% else %>
@@ -93,7 +93,7 @@
   </div>
   <div id="tabs-3">
     <p>
-    	<table align="center" width="90%"><tbody>
+    	<table align="center" width="100%"><tbody>
 			<tr>
 				<td class="gery_content" align="center"><b>Date</b></td>
 				<td class="gery_content" align="center"><b>Description</b></td>
@@ -240,7 +240,7 @@ Your Current Subscription Level:
 
 <p>You currently have&nbsp; $getNonExpiringHeatmapsRemaining($CurrentMember.ID) non-expiring heatmaps in your account.</p>
 <% if isSubscriber($CurrentMember.ID) %>
-<p class="stButton">Based on your current subscription level, you may purchase 10 non-expiring heatmaps for&nbsp;$&nbsp;{$getNonExpiringProduct($CurrentMember.ID).Price}<a style="float:right;" href="/purchase-member-non-expiring-heatmaps"><img src="themes/attwiz/images/button_purchase.png"></a></p>
+<div class="stButton"><p style="float:left;width:500px;margin:0px;">Based on your current subscription level, you may purchase 10 non-expiring heatmaps for&nbsp;$&nbsp;{$getNonExpiringProduct($CurrentMember.ID).Price}</p><a style="float:right;" href="/purchase-member-non-expiring-heatmaps"><img src="themes/attwiz/images/button_purchase.png"></a></div>
 <% else %>
 <p>You may purchase 10 non-expiring heatmaps for $ 59.00. <a style="float:right;" href="/purchase-non-expiring-heatmaps"><img src="themes/attwiz/images/button_purchase.png"></a></p>
 <% end_if %>

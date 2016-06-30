@@ -170,19 +170,20 @@
 						<div>
 							<div>
 								<div>
-									
-									<% if $URLSegment == "home" || $URLSegment == "plans-and-pricing" || $URLSegment == "about-us" %>
-										<div id="rightHandColumn">
-										<h2>Over $TotalUsersCount</h2>
-									<% end_if %>
-									<% if $URLSegment == "case-studies" || $URLSegment == "testimonials" || $URLSegment == "submit-your-case-study" %>
-										<div id="rightHandColumn">
-										<h4>Join the AttentionWizard Community</h4>
-										<h2>Over $TotalUsersCount</h2>
-									<% end_if %>
-									$ContentRight
-									<% if $URLSegment == "home" || $URLSegment == "plans-and-pricing" || $URLSegment == "case-studies" || $URLSegment == "testimonials" || $URLSegment == "submit-your-case-study" || $URLSegment == "about-us" %>
-										</div>
+									<% if $ContentRight %>
+										<% if $URLSegment == "home" || $URLSegment == "plans-and-pricing" || $URLSegment == "about-us" %>
+											<div id="rightHandColumn">
+											<h2>Over $TotalUsersCount</h2>
+										<% end_if %>
+										<% if $URLSegment == "case-studies" || $URLSegment == "testimonials" || $URLSegment == "submit-your-case-study" %>
+											<div id="rightHandColumn">
+											<h4>Join the AttentionWizard Community</h4>
+											<h2>Over $TotalUsersCount</h2>
+										<% end_if %>
+										$ContentRight
+										<% if $URLSegment == "home" || $URLSegment == "plans-and-pricing" || $URLSegment == "case-studies" || $URLSegment == "testimonials" || $URLSegment == "submit-your-case-study" || $URLSegment == "about-us" %>
+											</div>
+										<% end_if %>
 									<% end_if %>
 								</div>
 							</div>
