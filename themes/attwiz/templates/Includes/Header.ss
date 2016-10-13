@@ -12,14 +12,3 @@
 		<p class="LoginFormLabel">Customer Login</p> $LoginForm	
 	<% end_if %>
 </div>
-<% if not $CurrentMember %>
-	<div id="site_upgrade_message_wrap">
-		<div id="site_upgrade_message_inner">
-			<center><h4>Notice to all the existing users!</h4></center>
-			Please note that the site has been upgraded and old passwords will not work any more. 
-			Please reset your passwords by <a href="{$BaseHref}Security/lostpassword">clicking here</a>.
-			We apologize for any inconvenience this may cause you.
-		</div>
-	</div>
-<% end_if %>
-

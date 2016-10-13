@@ -2776,7 +2776,7 @@ p#ErrorMessage {
 }
 
 /* Site upgrade message */
-
+/*
 #site_upgrade_message_wrap{
 	margin: auto;
     width: 978px;
@@ -2797,4 +2797,4 @@ p#ErrorMessage {
     text-align: left;
     position: relative;
     top: -30px;
-}
+} */
