@@ -65,9 +65,9 @@
 <td style="padding:0px;">$getNonExpiringHeatmapsRemaining($CurrentMember.ID)</td>
 <td style="padding:0px;">
 	<% if isSubscriber($CurrentMember.ID) %>
-		<a href="/purchase-member-non-expiring-heatmaps">purchase</a>
+		<a style="text-decoration: none;margin-left:20px;" href="/purchase-member-non-expiring-heatmaps"><span class="changeSubscriptionButtonBlue">Purchase More</span></a>
 	<% else %>
-		<a href="/purchase-non-expiring-heatmaps">purchase</a>
+		<a style="text-decoration: none;margin-left:20px;" href="/purchase-non-expiring-heatmaps"><span class="changeSubscriptionButtonBlue">Purchase More</span></a>
 	<% end_if %>
 </td>
 </tr>

@@ -25,7 +25,7 @@ class PrepaidSignup_Controller extends Page_Controller
 		$cardType = array(
 	    		"visa"=>"<img src='themes/attwiz/images/visa.png' height=30px></img>",
 	    		"mc"=>"<img src='themes/attwiz/images/mastercard.jpeg' height=30px></img>",
-	    		"ae"=>"<img src='themes/attwiz/images/ae.jpeg' height=30px></img>",
+	    		"amex"=>"<img src='themes/attwiz/images/ae.jpeg' height=30px></img>",
 	    		"discover"=>"<img src='themes/attwiz/images/discover.jpeg' height=30px></img>"
 	    );
 	    $monthArray = array();

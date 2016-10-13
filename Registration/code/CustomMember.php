@@ -14,7 +14,6 @@ class CustomMember extends DataExtension {
 	
 	//Add form fields to CMS
 	public function updateCMSFields(FieldList $fields) {
-		$fields->renameField('ISCCID', 'InfusionSoft Credit Card ID');
 		$fields->renameField('ISContactID', 'InfusionSoft Contact ID');
 		$fields->replaceField('SignUpTrial', new ReadonlyField('SignUpTrial'));
 	}

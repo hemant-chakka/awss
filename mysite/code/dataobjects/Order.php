@@ -5,8 +5,6 @@ class Order extends DataObject {
     	"OrderStatus" => 'Varchar(10)',
     	"Amount" => 'Currency',
     	"JoomlaOrderNumber"=> 'Varchar(32)',
-    	//"CreditCardType" => 'Varchar(10)',
-    	//"CreditCardNumber" => 'Varchar(50)',
     	"IsTrial" => 'Boolean'
     );
     

@@ -15,6 +15,12 @@ class MemberNonExpiringHeatmaps_Controller extends Page_Controller
 	function init(){
 		parent::init();
 		Requirements::javascript('mysite/js/purchase-member-nonexp-heatmaps.js');
+		$member = Member::currentUser();
+		$creditCard = $this->getCurrentCreditCard($member->ID);
+		if(!$creditCard){
+			$this->setMessage('Error', 'Please update your credit card first.');
+			return $this->redirect('/account-settings/#tabs-2');
+		}
 	}
 	
 	//Generate the Member Non-Expiring Heatmaps purchase form
@@ -38,6 +44,10 @@ class MemberNonExpiringHeatmaps_Controller extends Page_Controller
 		$shoppingCart = $this->renderWith('PrepaidShoppingCart',array('Price' => $price));
 		// Get existing credit card ID
 		$creditCard = $this->getCurrentCreditCard($member->ID);
+		if(!$creditCard){
+			$this->setMessage('Error', 'Please update your credit card first.');
+			return $this->redirect('/account-settings/#tabs-2');
+		}
 		$fields = new FieldList(
 			new HiddenField('FirstName', 'First Name',$member->FirstName),
 			new HiddenField('LastName', 'Last Name',$member->Surname),

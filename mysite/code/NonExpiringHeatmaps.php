@@ -15,6 +15,12 @@ class NonExpiringHeatmaps_Controller extends Page_Controller
 	function init(){
 		parent::init();
 		Requirements::javascript('mysite/js/purchase-nonexp-heatmaps.js');
+		$member = Member::currentUser();
+		$creditCard = $this->getCurrentCreditCard($member->ID);
+		if(!$creditCard){
+			$this->setMessage('Error', 'Please update your credit card first.');
+			return $this->redirect('/account-settings/#tabs-2');
+		}
 	}
 	
 	//Generate the Non-Expiring Heatmaps purchase form
@@ -27,6 +33,10 @@ class NonExpiringHeatmaps_Controller extends Page_Controller
 		$shoppingCart = $this->renderWith('PrepaidShoppingCart',array('Price' => $price));
 		// Get existing credit card ID
 		$creditCard = $this->getCurrentCreditCard($member->ID);
+		if(!$creditCard){
+			$this->setMessage('Error', 'Please update your credit card first.');
+			return $this->redirect('/account-settings/#tabs-2');
+		}
 		$fields = new FieldList(
 			new HiddenField('FirstName', 'First Name',$member->FirstName),
 			new HiddenField('LastName', 'Last Name',$member->Surname),
@@ -82,6 +92,10 @@ class NonExpiringHeatmaps_Controller extends Page_Controller
 		$product = Product::get()->byID(7);
 		// Get existing credit card ID
 		$creditCard = $this->getCurrentCreditCard($member->ID);
+		if(!$creditCard){
+			$this->setMessage('Error', 'Sorry,the payment failed,please update your credit card.');
+			return $this->redirect('/account-settings/#tabs-2');
+		}
 		// Get the current InfusionSoft credit card ID
 		$ccID = $creditCard->ISCCID;
 		// Create an Infusionsoft order

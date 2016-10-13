@@ -18,18 +18,6 @@ class Product extends DataObject {
     static $searchable_fields = array(
     		'Name'
     );
-    /*
-	public function canDelete($member = null) {
-
-		return false;
-		
-	}
-	
-	public function canCreate($member = null) {
-	
-		return false;
-	
-	}  */
     
     // Create Defaults
     public function requireDefaultRecords() {

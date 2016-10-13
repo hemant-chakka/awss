@@ -8,10 +8,10 @@ After:
 # See http://doc.silverstripe.org/framework/en/topics/configuration
 # Caution: Indentation through two spaces, not tabs
 SSViewer:
-  theme: 'simple'
+  theme: 'attwiz'
 
 Page_Controller:
   allowed_ips:
     - '127.0.0.1'
     - '::1'
-    
+    - '115.98.116.59'

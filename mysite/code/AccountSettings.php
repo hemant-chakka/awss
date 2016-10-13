@@ -95,6 +95,10 @@ class AccountSettings_Controller extends Page_Controller {
 		$isProductID = $product->ISInitialProductID;
 		// Get the current InfusionSoft credit card ID
 		$creditCard = $this->getCurrentCreditCard($member->ID);
+		if(!$creditCard){
+			$this->setMessage('Error', 'Sorry,the payment failed,please update your credit card.');
+			return $this->redirect('/account-settings/#tabs-2');
+		}
 		$ccID = $creditCard->ISCCID;
 		$subscriptionID = $this->createISSubscription($isConID,$product->ISProductID, $product->RecurringPrice, $ccID, 30);
 		if($subscriptionID && is_int($subscriptionID)){
@@ -191,7 +195,7 @@ class AccountSettings_Controller extends Page_Controller {
 			}else{
 				//Set the subscription to Inactive 
 				$this->setSubscriptionStatus($subscriptionID, 'Inactive');
-				$this->setMessage('Error', 'Sorry,the payment failed due to some reason.please update your credit card.');
+				$this->setMessage('Error', 'Sorry,the payment failed,please update your credit card.');
 				return $this->redirect('/account-settings/#tabs-2');
 			}
 		}else{
@@ -215,6 +219,10 @@ class AccountSettings_Controller extends Page_Controller {
 		$credits = $product->Credits;
 		// Get existing credit card ID
 		$creditCard = $this->getCurrentCreditCard($member->ID);
+		if(!$creditCard){
+			$this->setMessage('Error', 'Sorry,the payment failed,please update your credit card.');
+			return $this->redirect('/account-settings/#tabs-2');
+		}
 		$ccID = $creditCard->ISCCID;
 		$subscriptionID = $this->createISSubscription($isConID,$product->ISProductID, $product->RecurringPrice, $ccID, 30);
 		if($subscriptionID && is_int($subscriptionID)){
@@ -359,7 +367,7 @@ class AccountSettings_Controller extends Page_Controller {
 					'UserID'  => 1
 				);
 				$conActionID = $app->dsAdd("ContactAction", $conActionDat);
-				$this->setMessage('Error', 'Sorry,the payment failed due to some reason.please update your credit card.');
+				$this->setMessage('Error', 'Sorry,the payment failed,please update your credit card.');
 				return $this->redirect('/account-settings/#tabs-2');
 			}
 		}else{
@@ -495,7 +503,7 @@ class UpdateBillingAddressForm extends Form {
 		$country = Geoip::countryCode2name($data['Country']);
 		if($data['CreditCardNumber'] == $data['CreditCardNumberCopy']){
 			//Get the credit card
-			$creditCard = $creditCard = CreditCard::get()->filter(array(
+			$creditCard = CreditCard::get()->filter(array(
    				'CreditCardNumber' => $data['CreditCardNumberCur'],
 				'MemberID'=> $member->ID
 			))->First();
@@ -540,6 +548,7 @@ class UpdateBillingAddressForm extends Form {
 			if($creditCard){
 				//Get current credit card, un-mark it as current
 				Controller::curr()->unsetCurrentCreditCard($member->ID);
+				$ccID = $creditCard->ISCCID;
 				//Update the credit card on InfusionSoft
 				$ccData = array(
 					'FirstName'  => $data['FirstName'],
@@ -556,7 +565,7 @@ class UpdateBillingAddressForm extends Form {
 					'ExpirationMonth'  => sprintf("%02s", $data['ExpiryMonth']),
 					'ExpirationYear'  => $data['ExpiryYear']
 				);
-				$app->dsUpdate("CreditCard", $creditCard->ISCCID, $ccData);
+				$app->dsUpdate("CreditCard",$ccID , $ccData);
 				//Update the credit card on site
 				$creditCard->CreditCardType = $data['CreditCardType'];
 				$creditCard->NameOnCard = $data['NameOnCard'];
@@ -613,6 +622,15 @@ class UpdateBillingAddressForm extends Form {
 				$newCreditCard->ISCCID = $ccID;
 				$newCreditCard->MemberID = $member->ID;
 				$newCreditCard->write();
+			}
+			//Update the user active Infusionsoft subscription Credit Card
+			$subscription = Subscription::get()->filter(array(
+					'MemberID' => $member->ID,
+					'Status' => 1
+			))->first();
+			if($subscription){
+				$subData = array('CC1'  => $ccID);
+				$app->dsUpdate("RecurringOrder", $subscription->SubscriptionID, $subData);
 			}
 		}
 		//Update Member

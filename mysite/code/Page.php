@@ -164,11 +164,13 @@ class Page_Controller extends ContentController {
 	function createISSubscription($contactId,$productId,$price,$ccID,$daysTillCharge){
 		//Get InfusionSoft Api
 		$app = $this->getInfusionSoftApi();
+		//Get config
+		$config = SiteConfig::current_site_config();
 		$returnFields = array('Id');
 		$query = array('ProductId' => $productId);
 		$cProgram = $app->dsQuery("CProgram",10,0,$query,$returnFields);
 		$cProgramId = $cProgram[0]['Id'];
-		$subId = $app->addRecurringAdv($contactId,false,$cProgramId,1,floatval($price),true,8,$ccID,0,$daysTillCharge);
+		$subId = $app->addRecurringAdv($contactId,false,$cProgramId,1,floatval($price),true,$config->MerchantAccount,$ccID,0,$daysTillCharge);
 		return $subId;
 	}
 	// Cancel a subscription on InfusionSoft // deprecated
@@ -404,8 +406,6 @@ class Page_Controller extends ContentController {
 		//Get the user details
 		$isContactId = intval($_REQUEST['Id']);
 		$email = $_REQUEST['Email'];
-		if($email != 'hemant.chakka@yahoo.com' && $email != 'stacey@sitetuners.com')
-			return false;
 		$productId = intval($this->request->param('ID'));
 		$member = Member::get()->filter(array(
 	    	'ISContactID' => $isContactId
@@ -468,8 +468,6 @@ class Page_Controller extends ContentController {
 		//Get the user details
 		$isContactId = intval($_REQUEST['Id']);
 		$emailAddress = $_REQUEST['Email'];
-		if($emailAddress != 'hemant.chakka@yahoo.com' && $emailAddress != 'stacey@sitetuners.com')
-			return false;
 		$productId = intval($this->request->param('ID'));
 		$member = Member::get()->filter(array(
 	    	'ISContactID' => $isContactId
@@ -801,7 +799,7 @@ class Page_Controller extends ContentController {
 	}
 	//Mark heatmap status on Joomla
 	public function markHeatmapStatusJoomla(){
-		//die('test2');
+		die('test2');
 		error_reporting(E_ALL);
 		ini_set('display_errors', 1);
 		ini_set('max_execution_time', 0);
