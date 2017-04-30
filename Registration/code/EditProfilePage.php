@@ -22,8 +22,10 @@ class EditProfilePage_Controller extends Page_Controller
 			new TextField('FirstName', 'First Name'),
 	    	new TextField('Surname', 'Last Name'),
 			new TextField('Email', 'Email'),
-			new ConfirmedPasswordField('Password', 'New Password')
+			$pw = new ConfirmedPasswordField('Password', 'New Password')
 		);
+	    
+	    $pw->setCanBeEmpty('true');
 	 	
 	    // Create action
 	    $actions = new FieldList(
@@ -31,7 +33,7 @@ class EditProfilePage_Controller extends Page_Controller
 	    );
 		$saveProfileAction->setAttribute('src', 'themes/attwiz/images/button_submit.gif');
 		// Create action
-		$validator = new RequiredFields('FirstName','Surname','Email');
+		$validator = new RequiredFields(array('FirstName','Surname','Email'));
 		$validator = null;
 		
 	    //Create form

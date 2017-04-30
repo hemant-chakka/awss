@@ -33,8 +33,8 @@ class ContactUs_Controller extends Page_Controller
 			new TextField('Phone', 'Phone'),
 			new TextField('Topic', 'Subject<span>(*)</span>'),
 			$message = new TextareaField('Message', 'Message<span>(*)</span>'),
-			new LiteralField('MessageLimit', '<span style="font-size:9px;margin-left:143px;position:relative;top:-15px;">Enter not more than 500 characters.</span>'),
-			new RecaptchaField('MyCaptcha')
+			new LiteralField('MessageLimit', '<span style="font-size:9px;margin-left:143px;position:relative;top:-15px;">Enter not more than 500 characters.</span>')
+			//new RecaptchaField('MyCaptcha')
 		);
 		$message->setAttribute('maxlength','500');
 	    // Create action
@@ -43,10 +43,12 @@ class ContactUs_Controller extends Page_Controller
 	    );
 	    $submit->setAttribute('src', 'themes/attwiz/images/button_send.gif');
 		// Create action
-		$validator = new RequiredFields('Name','Email','Topic','Message');
+		//$validator = new RequiredFields('Name','Email','Topic','Message');
+		//$validator = new RequiredFields('Captcha');
 		$validator = null;
-
-	 	return new Form($this, 'ContactUsForm', $fields, $actions, $validator);		
+	 	$form = new Form($this, 'ContactUsForm', $fields, $actions, $validator);	
+	 	$form->enableSpamProtection();
+	 	return $form;
 	}
 	
 	//Submit the contact us form

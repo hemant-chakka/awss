@@ -24,7 +24,7 @@
 				Message: {
 					required: true
 				},
-				recaptcha_response_field: {
+				Captcha: {
 					required: true
 				}
 			},
@@ -37,7 +37,7 @@
 		    	},
 		    	Topic: "Required",
 		    	Message: "Required",
-		    	recaptcha_response_field: "Required"
+		    	Captcha: "Required"
 		    },
 		    	
 		    submitHandler: function(form) {

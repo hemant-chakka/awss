@@ -19,7 +19,7 @@ ul.optionset {
 	color: 000;
 	padding:3px 0px;
 }
-.message.fail{ 
+.message.fail,p.error{ 
 	padding:10px;
     margin: 10px 10px 0;
     border: 1px solid #FFF;
@@ -176,7 +176,7 @@ input[type="Text"],input[type="Email"],input[type="Password"],textarea{
 }
 
 #Form_ContactUsForm #MyCaptcha { 
-	margin-left: 142px;
+	margin-left: 70px;
 }
 
 

@@ -26,9 +26,11 @@ i18n::set_locale('en_US');
 // Enable nested URLs for this site (e.g. page/sub-page/)
 if (class_exists('SiteTree')) SiteTree::enable_nested_urls();
 
-RecaptchaField::$public_api_key = '6Le2odkSAAAAANk6eZLvQJ1tJT8xYgYlEAx2vgtN';
-RecaptchaField::$private_api_key = '6Le2odkSAAAAAINaKkYcceBw453HCW-W7DGeLdVZ';
-SpamProtectorManager::set_spam_protector('RecaptchaProtector');
+//RecaptchaField::$public_api_key = '6Le2odkSAAAAANk6eZLvQJ1tJT8xYgYlEAx2vgtN';
+//RecaptchaField::$private_api_key = '6Le2odkSAAAAAINaKkYcceBw453HCW-W7DGeLdVZ';
+//SpamProtectorManager::set_spam_protector('RecaptchaProtector');
+
+
 // Extend MemberLoginForm
 Object::useCustomClass('MemberLoginForm', 'CustomLogin');
 

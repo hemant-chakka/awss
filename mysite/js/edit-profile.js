@@ -22,11 +22,9 @@
 				      email:true
 				},
 				'Password[_Password]': {
-					required: true,
 					minlength: 6
 				},
 				'Password[_ConfirmPassword]': {
-					required: true,
 					minlength: 6
 				}
 			},
@@ -39,11 +37,9 @@
 		    		email: "Invalid Email"
 		    	},
 		    	'Password[_Password]': {
-		    		required: "Required",
 		    		minlength: "Min 6 Chars"
 		    	},
 		    	'Password[_ConfirmPassword]': {
-		    		required: "Required",
 		    		minlength: "Min 6 Chars"
 		    	}
 		    },
